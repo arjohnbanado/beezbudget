@@ -1,0 +1,1235 @@
+openapi: 3.0.0
+paths:
+  /api/v1:
+    get:
+      operationId: AppController_getHello_v1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - App
+  /api/v1/auth/reset-password:
+    post:
+      operationId: AuthController_resetPassword_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  minLength: 12
+                  maxLength: 128
+                  allOf:
+                    - type: string
+                      pattern: '[a-z]'
+                    - type: string
+                      pattern: '[A-Z]'
+                    - type: string
+                      pattern: '[0-9]'
+                    - type: string
+                      pattern: '[^a-zA-Z0-9]'
+                rawToken:
+                  type: string
+                  pattern: ^[0-9a-f]{64}$
+              required:
+                - password
+                - rawToken
+      responses:
+        '201':
+          description: Password reset successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Auth
+  /api/v1/auth/register:
+    post:
+      operationId: AuthController_register_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  minLength: 12
+                  maxLength: 128
+                  allOf:
+                    - type: string
+                      pattern: '[a-z]'
+                    - type: string
+                      pattern: '[A-Z]'
+                    - type: string
+                      pattern: '[0-9]'
+                    - type: string
+                      pattern: '[^a-zA-Z0-9]'
+                rawToken:
+                  type: string
+                  pattern: ^[0-9a-f]{64}$
+              required:
+                - password
+                - rawToken
+      responses:
+        '201':
+          description: Account registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Auth
+  /api/v1/auth/login:
+    post:
+      operationId: AuthController_login_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  maxLength: 320
+                  format: email
+                  pattern: ^(?:[A-Za-z0-9_'+\-]+\.)*[A-Za-z0-9_'+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+                password:
+                  type: string
+                  minLength: 1
+                  maxLength: 128
+              required:
+                - email
+                - password
+              additionalProperties: false
+      responses:
+        '200':
+          description: Authentication succeeded and an access token cookie was set.
+          headers:
+            Set-Cookie:
+              description: HttpOnly, Secure, SameSite=Strict access_token cookie.
+              schema:
+                type: string
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Auth
+  /api/v1/auth/verifications/{id}:
+    get:
+      operationId: VerificationsController_findOne_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - used
+              - expired
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  resendAvailableAt:
+                    type: string
+                    format: date-time
+                required:
+                  - email
+                  - resendAvailableAt
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Verifications
+  /api/v1/auth/verifications:
+    post:
+      operationId: VerificationsController_create_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 5
+                  maxLength: 320
+                  format: email
+                  pattern: ^(?:[A-Za-z0-9_'+\-]+\.)*[A-Za-z0-9_'+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              required:
+                - email
+      responses:
+        '201':
+          description: Verification request created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '409':
+          description: The request conflicts with existing data.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Verifications
+  /api/v1/auth/verifications/{id}/resends:
+    post:
+      operationId: VerificationsController_resend_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      responses:
+        '201':
+          description: Verification request resent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - Verifications
+  /api/v1/auth/forgot-password/{id}:
+    get:
+      operationId: ForgotPasswordController_findOne_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - used
+              - expired
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  resendAvailableAt:
+                    type: string
+                    format: date-time
+                required:
+                  - email
+                  - resendAvailableAt
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - ForgotPassword
+  /api/v1/auth/forgot-password:
+    post:
+      operationId: ForgotPasswordController_create_v1
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  minLength: 5
+                  maxLength: 320
+                  format: email
+                  pattern: ^(?:[A-Za-z0-9_'+\-]+\.)*[A-Za-z0-9_'+\-]*[A-Za-z0-9_+-]@(?:[A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              required:
+                - email
+      responses:
+        '201':
+          description: Password-reset request created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - ForgotPassword
+  /api/v1/auth/forgot-password/{id}/resends:
+    post:
+      operationId: ForgotPasswordController_resend_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      responses:
+        '201':
+          description: Password-reset request resent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
+                additionalProperties: false
+        '400':
+          description: The request failed validation.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '401':
+          description: The credentials or token are invalid or expired.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+        '500':
+          description: An unexpected server error occurred.
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - type
+                  - title
+                  - status
+                  - detail
+                  - instance
+                  - code
+                  - timestamp
+                properties:
+                  type:
+                    type: string
+                  title:
+                    type: string
+                  status:
+                    type: integer
+                  detail:
+                    type: string
+                  instance:
+                    type: string
+                  code:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                additionalProperties: true
+      tags:
+        - ForgotPassword
+  /api/v1/users:
+    get:
+      operationId: UsersController_findAll_v1
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Users
+  /api/v1/users/{id}:
+    get:
+      operationId: UsersController_findOne_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Users
+    patch:
+      operationId: UsersController_update_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Users
+    delete:
+      operationId: UsersController_remove_v1
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Users
+info:
+  title: BeezBudget API
+  description: API documentation for BeezBudget
+  version: 0.0.1
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    UpdateUserDto:
+      type: object
+      properties: {}

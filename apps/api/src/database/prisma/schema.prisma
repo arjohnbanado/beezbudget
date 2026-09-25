@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+  moduleFormat    = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  active
+  suspended
+}
+
+enum TokenType {
+  signup_invitation
+  password_reset
+  two_factor_auth
+}
+
+model User {
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String              @db.VarChar(100)
+  email              String              @unique @db.VarChar(320)
+  /// Sized for bcrypt (60 chars); use varchar(255) if Argon2id
+  password           String?             @db.VarChar(72)
+  facebookId         String?             @unique @map("facebook_id") @db.VarChar(64)
+  googleId           String?             @unique @map("google_id") @db.VarChar(64)
+  status             UserStatus          @default(active)
+  createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt          DateTime            @updatedAt @map("updated_at") @db.Timestamp()
+  
+  verificationTokens VerificationToken[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// Stores target email before user account exists
+  email             String    @db.VarChar(320)
+  /// Null during initial sign-up; set for existing users (2FA/password reset)
+  userId            String?   @map("user_id") @db.Uuid
+  /// SHA-256 hash of the plain OTP or magic link secret
+  tokenHash         String    @map("token_hash") @db.VarChar(64)
+  type              TokenType @default(signup_invitation)
+  resendCount       Int       @default(0) @map("resend_count")
+  /// Track failed attempts to prevent brute-force guessing
+  attemptCount      Int       @default(0) @map("attempt_count")
+  /// Cooldown timestamp before next resend
+  resendAvailableAt DateTime  @map("resend_available_at") @db.Timestamp()
+  expiresAt         DateTime  @map("expires_at") @db.Timestamp()
+  /// Set when redeemed to prevent replay attacks
+  usedAt            DateTime? @map("used_at") @db.Timestamp()
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamp()
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([email, type])
+  @@index([userId, type])
+  @@index([tokenHash])
+  @@map("verification_tokens")
+}

@@ -1,0 +1,59 @@
+@layer theme, base, mui, components, utilities;
+@import "tailwindcss";
+@import "../design-system/tokens.css";
+
+@theme {
+  /*
+  |--------------------------------------------------------------------------
+  | Colors
+  |--------------------------------------------------------------------------
+  */
+  --color-brand-default: var(--color-yellow-400);
+  --color-brand-strong: var(--color-yellow-600);
+  --color-brand-subtle: var(--color-yellow-50);
+  --color-light: var(--color-neutral-0);
+  --color-subtle: var(--color-neutral-200);
+  --color-dark: var(--color-neutral-950);
+  --color-dark-subtle: var(--color-neutral-600);
+  --color-canvas: var(--color-neutral-50);
+  --color-error: var(--color-red-400);
+  --color-success: var(--color-green-600);
+  --color-link: var(--color-blue-400);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Typography
+  |--------------------------------------------------------------------------
+  */
+  --font-display: var(--font-display);
+  --font-sans: var(--font-inter);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Radii
+  |--------------------------------------------------------------------------
+  */
+  --radius-none: var(--radius-0);
+  --radius-sm: var(--radius-4);
+  --radius-md: var(--radius-8);
+  --radius-lg: var(--radius-16);
+  --radius-xl: var(--radius-24);
+  --radius-full: var(--radius-9999);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Spacing
+  |--------------------------------------------------------------------------
+  */
+  --spacing-none: var(--spacing-0);
+  --spacing-xxs: var(--spacing-4);
+  --spacing-xs: var(--spacing-8);
+  --spacing-sm: var(--spacing-12);
+  --spacing-md: var(--spacing-16);
+  --spacing-lg: var(--spacing-24);
+  --spacing-xl: var(--spacing-32);
+  --spacing-2xl: var(--spacing-48);
+  --spacing-3xl: var(--spacing-64);
+  --spacing-4xl: var(--spacing-96);
+  --spacing-5xl: var(--spacing-128);
+}
