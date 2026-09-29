@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
+ * Model Currency
+ * 
+ */
+export type Currency = Prisma.CurrencyModel
+/**
  * Model User
  * 
  */
@@ -27,3 +32,18 @@ export type User = Prisma.UserModel
  * 
  */
 export type VerificationToken = Prisma.VerificationTokenModel
+/**
+ * Model AccountType
+ * 
+ */
+export type AccountType = Prisma.AccountTypeModel
+/**
+ * Model Account
+ * 
+ */
+export type Account = Prisma.AccountModel
+/**
+ * Model ExchangeRate
+ * 
+ */
+export type ExchangeRate = Prisma.ExchangeRateModel

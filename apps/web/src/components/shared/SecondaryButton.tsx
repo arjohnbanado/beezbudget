@@ -1,12 +1,15 @@
 import Button from "@mui/material/Button";
 import { PrimaryButtonProps } from "./PrimaryButton";
 
-export interface SecondaryButtonProps extends PrimaryButtonProps {}
+export type SecondaryButtonProps = PrimaryButtonProps;
 
 function SecondaryButton({
   type,
   text,
+  textClassName = "text-base py-xs px-xl text-nowrap",
   path,
+  icon: Icon,
+  iconPosition = "left",
   loading,
   disabled,
   onClick,
@@ -21,8 +24,10 @@ function SecondaryButton({
       loading={loading}
       disabled={disabled}
       onClick={onClick}
+      startIcon={iconPosition === "left" && Icon ? <Icon /> : undefined}
+      endIcon={iconPosition === "right" && Icon ? <Icon /> : undefined}
     >
-      <span className="text-base py-xs px-xl text-nowrap">{text}</span>
+      <span className={textClassName}>{text}</span>
     </Button>
   );
 }

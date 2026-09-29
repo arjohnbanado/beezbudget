@@ -1,9 +1,9 @@
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/prisma"
-  moduleFormat    = "esm"
+  provider               = "prisma-client"
+  output                 = "./generated/prisma"
+  moduleFormat           = "esm"
   generatedFileExtension = "ts"
-  importFileExtension = "js"
+  importFileExtension    = "js"
 }
 
 datasource db {
@@ -21,19 +21,42 @@ enum TokenType {
   two_factor_auth
 }
 
+enum AccountStatus {
+  active
+  inactive
+}
+
+model Currency {
+  code         String  @id @db.Char(3)
+  name         String  @db.VarChar(100)
+  minorUnit    Int     @map("minor_unit") @db.SmallInt
+  isSelectable Boolean @default(true) @map("is_selectable")
+
+  preferredByUsers User[]         @relation("UserPreferredCurrency")
+  accounts         Account[]
+  baseRates        ExchangeRate[] @relation("ExchangeRateBaseCurrency")
+  quoteRates       ExchangeRate[] @relation("ExchangeRateQuoteCurrency")
+
+  @@map("currencies")
+}
+
 model User {
-  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name               String              @db.VarChar(100)
-  email              String              @unique @db.VarChar(320)
+  id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                  String     @db.VarChar(100)
+  email                 String     @unique @db.VarChar(320)
   /// Sized for bcrypt (60 chars); use varchar(255) if Argon2id
-  password           String?             @db.VarChar(72)
-  facebookId         String?             @unique @map("facebook_id") @db.VarChar(64)
-  googleId           String?             @unique @map("google_id") @db.VarChar(64)
-  status             UserStatus          @default(active)
-  createdAt          DateTime            @default(now()) @map("created_at") @db.Timestamp()
-  updatedAt          DateTime            @updatedAt @map("updated_at") @db.Timestamp()
-  
+  password              String?    @db.VarChar(72)
+  facebookId            String?    @unique @map("facebook_id") @db.VarChar(64)
+  googleId              String?    @unique @map("google_id") @db.VarChar(64)
+  status                UserStatus @default(active)
+  preferredCurrencyCode String?    @map("preferred_currency_code") @db.Char(3)
+  createdAt             DateTime   @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt             DateTime   @updatedAt @map("updated_at") @db.Timestamp()
+
+  preferredCurrency  Currency?           @relation("UserPreferredCurrency", fields: [preferredCurrencyCode], references: [code])
   verificationTokens VerificationToken[]
+  accountTypes       AccountType[]
+  accounts           Account[]
 
   @@map("users")
 }
@@ -63,4 +86,60 @@ model VerificationToken {
   @@index([userId, type])
   @@index([tokenHash])
   @@map("verification_tokens")
+}
+
+model AccountType {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  name      String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp()
+
+  user     User?     @relation(fields: [userId], references: [id])
+  accounts Account[]
+
+  @@index([userId])
+  @@index([name])
+  @@map("account_types")
+}
+
+model Account {
+  id                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                  String        @map("user_id") @db.Uuid
+  accountTypeId           String        @map("account_type_id") @db.Uuid
+  name                    String        @db.VarChar(100)
+  accountNumberCiphertext String?       @map("account_number_ciphertext") @db.Text
+  accountNumberIv         String?       @map("account_number_iv") @db.VarChar(16)
+  accountNumberAuthTag    String?       @map("account_number_auth_tag") @db.VarChar(24)
+  accountNumberLast4      String?       @map("account_number_last4") @db.VarChar(4)
+  openingBalance          Decimal?      @map("opening_balance") @db.Decimal(20, 4)
+  currencyCode            String        @map("currency_code") @db.Char(3)
+  iconKey                 String        @map("icon_key") @db.VarChar(100)
+  status                  AccountStatus @default(active)
+  createdAt               DateTime      @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt               DateTime      @updatedAt @map("updated_at") @db.Timestamp()
+
+  user        User        @relation(fields: [userId], references: [id])
+  accountType AccountType @relation(fields: [accountTypeId], references: [id], onDelete: Restrict)
+  currency    Currency    @relation(fields: [currencyCode], references: [code])
+
+  @@index([userId, status, name])
+  @@index([userId, accountTypeId, status])
+  @@map("accounts")
+}
+
+model ExchangeRate {
+  baseCurrencyCode  String   @map("base_currency_code") @db.Char(3)
+  quoteCurrencyCode String   @map("quote_currency_code") @db.Char(3)
+  rateDate          DateTime @map("rate_date") @db.Date
+  rate              Decimal  @db.Decimal(24, 12)
+  source            String   @db.VarChar(50)
+  fetchedAt         DateTime @map("fetched_at") @db.Timestamp()
+
+  baseCurrency  Currency @relation("ExchangeRateBaseCurrency", fields: [baseCurrencyCode], references: [code])
+  quoteCurrency Currency @relation("ExchangeRateQuoteCurrency", fields: [quoteCurrencyCode], references: [code])
+
+  @@id([baseCurrencyCode, quoteCurrencyCode, rateDate, source])
+  @@index([quoteCurrencyCode, baseCurrencyCode, rateDate])
+  @@map("exchange_rates")
 }

@@ -32,6 +32,7 @@ export type UserMinAggregateOutputType = {
   facebookId: string | null
   googleId: string | null
   status: $Enums.UserStatus | null
+  preferredCurrencyCode: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   facebookId: string | null
   googleId: string | null
   status: $Enums.UserStatus | null
+  preferredCurrencyCode: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,7 @@ export type UserCountAggregateOutputType = {
   facebookId: number
   googleId: number
   status: number
+  preferredCurrencyCode: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +73,7 @@ export type UserMinAggregateInputType = {
   facebookId?: true
   googleId?: true
   status?: true
+  preferredCurrencyCode?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +86,7 @@ export type UserMaxAggregateInputType = {
   facebookId?: true
   googleId?: true
   status?: true
+  preferredCurrencyCode?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +99,7 @@ export type UserCountAggregateInputType = {
   facebookId?: true
   googleId?: true
   status?: true
+  preferredCurrencyCode?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +185,7 @@ export type UserGroupByOutputType = {
   facebookId: string | null
   googleId: string | null
   status: $Enums.UserStatus
+  preferredCurrencyCode: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -212,9 +219,13 @@ export type UserWhereInput = {
   facebookId?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  preferredCurrency?: Prisma.XOR<Prisma.CurrencyNullableScalarRelationFilter, Prisma.CurrencyWhereInput> | null
   verificationTokens?: Prisma.VerificationTokenListRelationFilter
+  accountTypes?: Prisma.AccountTypeListRelationFilter
+  accounts?: Prisma.AccountListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -225,9 +236,13 @@ export type UserOrderByWithRelationInput = {
   facebookId?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  preferredCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  preferredCurrency?: Prisma.CurrencyOrderByWithRelationInput
   verificationTokens?: Prisma.VerificationTokenOrderByRelationAggregateInput
+  accountTypes?: Prisma.AccountTypeOrderByRelationAggregateInput
+  accounts?: Prisma.AccountOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -241,9 +256,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  preferredCurrency?: Prisma.XOR<Prisma.CurrencyNullableScalarRelationFilter, Prisma.CurrencyWhereInput> | null
   verificationTokens?: Prisma.VerificationTokenListRelationFilter
+  accountTypes?: Prisma.AccountTypeListRelationFilter
+  accounts?: Prisma.AccountListRelationFilter
 }, "id" | "email" | "facebookId" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -254,6 +273,7 @@ export type UserOrderByWithAggregationInput = {
   facebookId?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  preferredCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -272,6 +292,7 @@ export type UserScalarWhereWithAggregatesInput = {
   facebookId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -286,7 +307,10 @@ export type UserCreateInput = {
   status?: $Enums.UserStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
   verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -297,9 +321,12 @@ export type UserUncheckedCreateInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  preferredCurrencyCode?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -312,7 +339,10 @@ export type UserUpdateInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
   verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -323,9 +353,12 @@ export type UserUncheckedUpdateInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -336,6 +369,7 @@ export type UserCreateManyInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  preferredCurrencyCode?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -360,8 +394,19 @@ export type UserUncheckedUpdateManyInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -372,6 +417,7 @@ export type UserCountOrderByAggregateInput = {
   facebookId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  preferredCurrencyCode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -384,6 +430,7 @@ export type UserMaxOrderByAggregateInput = {
   facebookId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  preferredCurrencyCode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,6 +443,7 @@ export type UserMinOrderByAggregateInput = {
   facebookId?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  preferredCurrencyCode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,8 +453,51 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
+export type UserCreateNestedManyWithoutPreferredCurrencyInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput> | Prisma.UserCreateWithoutPreferredCurrencyInput[] | Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput | Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput[]
+  createMany?: Prisma.UserCreateManyPreferredCurrencyInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutPreferredCurrencyInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput> | Prisma.UserCreateWithoutPreferredCurrencyInput[] | Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput | Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput[]
+  createMany?: Prisma.UserCreateManyPreferredCurrencyInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutPreferredCurrencyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput> | Prisma.UserCreateWithoutPreferredCurrencyInput[] | Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput | Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutPreferredCurrencyInput | Prisma.UserUpsertWithWhereUniqueWithoutPreferredCurrencyInput[]
+  createMany?: Prisma.UserCreateManyPreferredCurrencyInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutPreferredCurrencyInput | Prisma.UserUpdateWithWhereUniqueWithoutPreferredCurrencyInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutPreferredCurrencyInput | Prisma.UserUpdateManyWithWhereWithoutPreferredCurrencyInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutPreferredCurrencyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput> | Prisma.UserCreateWithoutPreferredCurrencyInput[] | Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput | Prisma.UserCreateOrConnectWithoutPreferredCurrencyInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutPreferredCurrencyInput | Prisma.UserUpsertWithWhereUniqueWithoutPreferredCurrencyInput[]
+  createMany?: Prisma.UserCreateManyPreferredCurrencyInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutPreferredCurrencyInput | Prisma.UserUpdateWithWhereUniqueWithoutPreferredCurrencyInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutPreferredCurrencyInput | Prisma.UserUpdateManyWithWhereWithoutPreferredCurrencyInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -437,6 +528,108 @@ export type UserUpdateOneWithoutVerificationTokensNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationTokensInput, Prisma.UserUpdateWithoutVerificationTokensInput>, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
 }
 
+export type UserCreateNestedOneWithoutAccountTypesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountTypesInput, Prisma.UserUncheckedCreateWithoutAccountTypesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountTypesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAccountTypesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountTypesInput, Prisma.UserUncheckedCreateWithoutAccountTypesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountTypesInput
+  upsert?: Prisma.UserUpsertWithoutAccountTypesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountTypesInput, Prisma.UserUpdateWithoutAccountTypesInput>, Prisma.UserUncheckedUpdateWithoutAccountTypesInput>
+}
+
+export type UserCreateNestedOneWithoutAccountsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  upsert?: Prisma.UserUpsertWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserCreateWithoutPreferredCurrencyInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPreferredCurrencyInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPreferredCurrencyInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput>
+}
+
+export type UserCreateManyPreferredCurrencyInputEnvelope = {
+  data: Prisma.UserCreateManyPreferredCurrencyInput | Prisma.UserCreateManyPreferredCurrencyInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithWhereUniqueWithoutPreferredCurrencyInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPreferredCurrencyInput, Prisma.UserUncheckedUpdateWithoutPreferredCurrencyInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPreferredCurrencyInput, Prisma.UserUncheckedCreateWithoutPreferredCurrencyInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutPreferredCurrencyInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPreferredCurrencyInput, Prisma.UserUncheckedUpdateWithoutPreferredCurrencyInput>
+}
+
+export type UserUpdateManyWithWhereWithoutPreferredCurrencyInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutPreferredCurrencyInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.UuidFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringNullableFilter<"User"> | string | null
+  facebookId?: Prisma.StringNullableFilter<"User"> | string | null
+  googleId?: Prisma.StringNullableFilter<"User"> | string | null
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
 export type UserCreateWithoutVerificationTokensInput = {
   id?: string
   name: string
@@ -447,6 +640,9 @@ export type UserCreateWithoutVerificationTokensInput = {
   status?: $Enums.UserStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
+  accountTypes?: Prisma.AccountTypeCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationTokensInput = {
@@ -457,8 +653,11 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  preferredCurrencyCode?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  accountTypes?: Prisma.AccountTypeUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationTokensInput = {
@@ -487,9 +686,221 @@ export type UserUpdateWithoutVerificationTokensInput = {
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
+  accountTypes?: Prisma.AccountTypeUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accountTypes?: Prisma.AccountTypeUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAccountTypesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAccountTypesInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  preferredCurrencyCode?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAccountTypesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountTypesInput, Prisma.UserUncheckedCreateWithoutAccountTypesInput>
+}
+
+export type UserUpsertWithoutAccountTypesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountTypesInput, Prisma.UserUncheckedUpdateWithoutAccountTypesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountTypesInput, Prisma.UserUncheckedCreateWithoutAccountTypesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccountTypesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountTypesInput, Prisma.UserUncheckedUpdateWithoutAccountTypesInput>
+}
+
+export type UserUpdateWithoutAccountTypesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccountTypesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAccountsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAccountsInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  preferredCurrencyCode?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  accountTypes?: Prisma.AccountTypeUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAccountsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+}
+
+export type UserUpsertWithoutAccountsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateManyPreferredCurrencyInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  facebookId?: string | null
+  googleId?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutPreferredCurrencyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPreferredCurrencyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  accountTypes?: Prisma.AccountTypeUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutPreferredCurrencyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -508,10 +919,14 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
 
 export type UserCountOutputType = {
   verificationTokens: number
+  accountTypes: number
+  accounts: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   verificationTokens?: boolean | UserCountOutputTypeCountVerificationTokensArgs
+  accountTypes?: boolean | UserCountOutputTypeCountAccountTypesArgs
+  accounts?: boolean | UserCountOutputTypeCountAccountsArgs
 }
 
 /**
@@ -531,6 +946,20 @@ export type UserCountOutputTypeCountVerificationTokensArgs<ExtArgs extends runti
   where?: Prisma.VerificationTokenWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccountTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountTypeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -540,9 +969,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   facebookId?: boolean
   googleId?: boolean
   status?: boolean
+  preferredCurrencyCode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
   verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
+  accountTypes?: boolean | Prisma.User$accountTypesArgs<ExtArgs>
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -554,8 +987,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   facebookId?: boolean
   googleId?: boolean
   status?: boolean
+  preferredCurrencyCode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -566,8 +1001,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   facebookId?: boolean
   googleId?: boolean
   status?: boolean
+  preferredCurrencyCode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -578,22 +1015,33 @@ export type UserSelectScalar = {
   facebookId?: boolean
   googleId?: boolean
   status?: boolean
+  preferredCurrencyCode?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "facebookId" | "googleId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "facebookId" | "googleId" | "status" | "preferredCurrencyCode" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
   verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
+  accountTypes?: boolean | Prisma.User$accountTypesArgs<ExtArgs>
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    preferredCurrency: Prisma.$CurrencyPayload<ExtArgs> | null
     verificationTokens: Prisma.$VerificationTokenPayload<ExtArgs>[]
+    accountTypes: Prisma.$AccountTypePayload<ExtArgs>[]
+    accounts: Prisma.$AccountPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -606,6 +1054,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     facebookId: string | null
     googleId: string | null
     status: $Enums.UserStatus
+    preferredCurrencyCode: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1002,7 +1451,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  preferredCurrency<T extends Prisma.User$preferredCurrencyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$preferredCurrencyArgs<ExtArgs>>): Prisma.Prisma__CurrencyClient<runtime.Types.Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   verificationTokens<T extends Prisma.User$verificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accountTypes<T extends Prisma.User$accountTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1039,6 +1491,7 @@ export interface UserFieldRefs {
   readonly facebookId: Prisma.FieldRef<"User", 'String'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly preferredCurrencyCode: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1295,6 +1748,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1365,6 +1822,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1434,6 +1895,25 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.preferredCurrency
+ */
+export type User$preferredCurrencyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Currency
+   */
+  select?: Prisma.CurrencySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Currency
+   */
+  omit?: Prisma.CurrencyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CurrencyInclude<ExtArgs> | null
+  where?: Prisma.CurrencyWhereInput
+}
+
+/**
  * User.verificationTokens
  */
 export type User$verificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1455,6 +1935,54 @@ export type User$verificationTokensArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.VerificationTokenScalarFieldEnum | Prisma.VerificationTokenScalarFieldEnum[]
+}
+
+/**
+ * User.accountTypes
+ */
+export type User$accountTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AccountType
+   */
+  select?: Prisma.AccountTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AccountType
+   */
+  omit?: Prisma.AccountTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  where?: Prisma.AccountTypeWhereInput
+  orderBy?: Prisma.AccountTypeOrderByWithRelationInput | Prisma.AccountTypeOrderByWithRelationInput[]
+  cursor?: Prisma.AccountTypeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountTypeScalarFieldEnum | Prisma.AccountTypeScalarFieldEnum[]
+}
+
+/**
+ * User.accounts
+ */
+export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
 }
 
 /**

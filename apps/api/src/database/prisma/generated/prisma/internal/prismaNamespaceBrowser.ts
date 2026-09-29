@@ -51,8 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Currency: 'Currency',
   User: 'User',
-  VerificationToken: 'VerificationToken'
+  VerificationToken: 'VerificationToken',
+  AccountType: 'AccountType',
+  Account: 'Account',
+  ExchangeRate: 'ExchangeRate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,6 +75,16 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const CurrencyScalarFieldEnum = {
+  code: 'code',
+  name: 'name',
+  minorUnit: 'minorUnit',
+  isSelectable: 'isSelectable'
+} as const
+
+export type CurrencyScalarFieldEnum = (typeof CurrencyScalarFieldEnum)[keyof typeof CurrencyScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -79,6 +93,7 @@ export const UserScalarFieldEnum = {
   facebookId: 'facebookId',
   googleId: 'googleId',
   status: 'status',
+  preferredCurrencyCode: 'preferredCurrencyCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -101,6 +116,49 @@ export const VerificationTokenScalarFieldEnum = {
 } as const
 
 export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+export const AccountTypeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountTypeScalarFieldEnum = (typeof AccountTypeScalarFieldEnum)[keyof typeof AccountTypeScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accountTypeId: 'accountTypeId',
+  name: 'name',
+  accountNumberCiphertext: 'accountNumberCiphertext',
+  accountNumberIv: 'accountNumberIv',
+  accountNumberAuthTag: 'accountNumberAuthTag',
+  accountNumberLast4: 'accountNumberLast4',
+  openingBalance: 'openingBalance',
+  currencyCode: 'currencyCode',
+  iconKey: 'iconKey',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const ExchangeRateScalarFieldEnum = {
+  baseCurrencyCode: 'baseCurrencyCode',
+  quoteCurrencyCode: 'quoteCurrencyCode',
+  rateDate: 'rateDate',
+  rate: 'rate',
+  source: 'source',
+  fetchedAt: 'fetchedAt'
+} as const
+
+export type ExchangeRateScalarFieldEnum = (typeof ExchangeRateScalarFieldEnum)[keyof typeof ExchangeRateScalarFieldEnum]
 
 
 export const SortOrder = {

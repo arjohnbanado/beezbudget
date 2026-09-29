@@ -1,8 +1,12 @@
 import Button from "@mui/material/Button";
+import type { SvgIconComponent } from "@mui/icons-material";
 
 export interface PrimaryButtonProps {
   type: "button" | "submit";
   text: string;
+  textClassName?: string;
+  icon?: SvgIconComponent;
+  iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
   path?: string;
@@ -13,6 +17,9 @@ function PrimaryButton({
   path,
   type,
   text,
+  textClassName = "text-base text-light text-shadow-lg font-bold py-xs px-xl text-nowrap",
+  icon: Icon,
+  iconPosition = "left",
   loading,
   disabled,
 }: PrimaryButtonProps) {
@@ -25,10 +32,10 @@ function PrimaryButton({
       loading={loading}
       disabled={disabled}
       href={path}
+      startIcon={iconPosition === "left" && Icon ? <Icon /> : undefined}
+      endIcon={iconPosition === "right" && Icon ? <Icon /> : undefined}
     >
-      <span className="text-base text-light text-shadow-lg font-bold py-xs px-xl text-nowrap">
-        {text}
-      </span>
+      <span className={textClassName}>{text}</span>
     </Button>
   );
 }
