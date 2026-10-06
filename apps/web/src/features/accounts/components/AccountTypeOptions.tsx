@@ -38,9 +38,9 @@ export default function AccountTypeOptions({
     );
   }
 
-  const accountTypes = builtInAccountTypes.concat(
-    data?.map((d) => d.name) || [],
-  );
+  const accountTypes = builtInAccountTypes
+    .concat(data?.map((d) => d.name) || [])
+    .sort();
 
   return (
     <div>
@@ -52,7 +52,9 @@ export default function AccountTypeOptions({
             {...field}
             aria-labelledby="account-types"
             name="account-types-radio-group"
-            sx={{ gap: "var(--spacing-lg)", mt: "var(--spacing-xl)" }}
+            sx={{
+              flexWrap: "nowrap",
+            }}
           >
             {accountTypes.map((accountType) => {
               return (
@@ -64,9 +66,15 @@ export default function AccountTypeOptions({
                   labelPlacement="start"
                   sx={{
                     width: "100%",
+                    padding: "var(--spacing-xs)",
                     justifyContent: "space-between",
                     margin: 0,
                     borderBottom: "2px solid var(--color-canvas)",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "var(--color-brand-subtle)",
+                      cursor: "pointer",
+                    },
                   }}
                   onChange={onCloseTypes}
                 />

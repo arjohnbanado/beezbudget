@@ -4,6 +4,7 @@ import { inter, madimiOne } from "../lib/fonts";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
+import { ToastProvider } from "../providers/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${madimiOne.variable} ${inter.variable}`}>
       <body className="text-dark font-sans">
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <ToastProvider>{children}</ToastProvider>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

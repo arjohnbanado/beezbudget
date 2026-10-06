@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { getApiErrorMessage } from "@/src/utils/errors";
 import PrimaryButton from "@/src/components/shared/PrimaryButton";
+import { useToast } from "@/src/providers/ToastProvider";
+import { useSWRConfig } from "swr";
 
 const schema = z.object({
   account_type: z
@@ -22,7 +24,8 @@ type FormFields = z.infer<typeof schema>;
 
 export default function AddNewAccountType() {
   const [openNewType, setOpenNewType] = useState(false);
-
+  const { showToast } = useToast();
+  const { mutate } = useSWRConfig();
   const {
     control,
     handleSubmit,
@@ -46,7 +49,11 @@ export default function AddNewAccountType() {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       await axios.post("/api/v1/accounts/types", data);
-
+      mutate("/api/v1/accounts/types");
+      showToast({
+        message: "Account type saved successfully.",
+        severity: "success",
+      });
       handleCloseNewType();
     } catch (error) {
       setError("root.serverError", {
@@ -72,7 +79,7 @@ export default function AddNewAccountType() {
         open={openNewType}
         onClick={handleCloseNewType}
       >
-        <BackDropView>
+        <BackDropView isHeightContents={true}>
           <div>
             <div className="mb-xl">
               <h1 className="text-lg font-bold text-center">

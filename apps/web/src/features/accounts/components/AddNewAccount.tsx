@@ -28,6 +28,7 @@ export default function AddNewAccount() {
           textClassName="p-none"
         />
       </div>
+
       <Backdrop
         sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
         open={openAccountForm}
