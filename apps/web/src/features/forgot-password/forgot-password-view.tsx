@@ -1,25 +1,22 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import BeezLogo from "@/src/components/shared/BeezLogo";
-import { Button } from "@mui/material";
 import GuideView from "@/src/components/ui/GuideView";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import BackButton from "@/src/components/shared/BackButton";
 
 export default function ForgotPasswordView() {
   return (
     <div>
       <GuideView>
         <div>
-          <Button
-            type="button"
-            variant="text"
-            href="/"
+          <BackButton
             sx={{
               color: "var(--color-dark-subtle)",
               paddingLeft: "0.625rem",
             }}
           >
             <ArrowBackIosIcon />
-          </Button>
+          </BackButton>
         </div>
         <div className="flex justify-center">
           <BeezLogo />

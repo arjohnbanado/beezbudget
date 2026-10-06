@@ -22,6 +22,7 @@ function PrimaryButton({
   iconPosition = "left",
   loading,
   disabled,
+  onClick,
 }: PrimaryButtonProps) {
   return (
     <Button
@@ -32,6 +33,7 @@ function PrimaryButton({
       loading={loading}
       disabled={disabled}
       href={path}
+      onClick={onClick}
       startIcon={iconPosition === "left" && Icon ? <Icon /> : undefined}
       endIcon={iconPosition === "right" && Icon ? <Icon /> : undefined}
     >

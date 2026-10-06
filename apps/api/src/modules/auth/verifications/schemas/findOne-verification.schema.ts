@@ -9,6 +9,7 @@ export const FindOneVerificationResponseSchema = z.object({
   email: z.string(),
   resendAvailableAt: z.date(),
 });
+
 export type FindOneVerificationResponseDto = z.infer<
   typeof FindOneVerificationResponseSchema
 >;

@@ -2,8 +2,10 @@
 
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Backdrop, Button } from "@mui/material";
+import { Backdrop } from "@mui/material";
 import { useState } from "react";
+import NewAccountForm from "./NewAccountForm";
+import BackDropView from "@/src/components/ui/BackDropView";
 
 export default function AddNewAccount() {
   const [openAccountForm, setOpenAccountForm] = useState(false);
@@ -31,15 +33,9 @@ export default function AddNewAccount() {
         open={openAccountForm}
         onClick={handleClose}
       >
-        <div
-          className="overflow-y-auto rounded-lg w-[90%] h-[80%] bg-light p-lg"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div>
-            <h1 className="text-lg font-bold">Create new account</h1>
-            <Button></Button>
-          </div>
-        </div>
+        <BackDropView>
+          <NewAccountForm />
+        </BackDropView>
       </Backdrop>
     </div>
   );

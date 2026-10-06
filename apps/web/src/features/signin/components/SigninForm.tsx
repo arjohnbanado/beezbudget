@@ -61,8 +61,8 @@ export default function SigninForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-md">
           <Controller
-            name="email"
             control={control}
+            name="email"
             render={({ field }) => (
               <TextField
                 {...field}

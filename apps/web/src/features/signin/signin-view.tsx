@@ -1,9 +1,9 @@
 import Image from "next/image";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import bbsigninheaderbanner from "@/public/images/illustrations/beez-with-coin-and-piggy-bank.svg";
-import { Button } from "@mui/material";
 import SigninForm from "./components/SigninForm";
 import SigninBanner from "./components/SigninBanner";
+import BackButton from "@/src/components/shared/BackButton";
 export default function SigninView() {
   return (
     <div className="min-h-screen md:bg-canvas md:flex md:items-center md:justify-center">
@@ -17,19 +17,16 @@ export default function SigninView() {
               alt="BeezBudget security theme header banner for credentials setup form"
               className="object-cover md:rounded-tr-lg md:rounded-tl-lg"
             />
-            <div className="flex items-center w-[100%] h-[100%] absolute top-0 left-0 bg-linear-to-r from-brand-strong/75 from-70% to-brand-default/20 md:rounded-tr-lg md:rounded-tl-lg">
-              <Button
-                type="button"
-                variant="text"
+            <div className="pl-lg flex items-center w-[100%] h-[100%] absolute top-0 left-0 bg-linear-to-r from-brand-strong/75 from-70% to-brand-default/20 md:rounded-tr-lg md:rounded-tl-lg">
+              <BackButton
                 aria-label="Go back"
-                href="/"
                 sx={{
                   color: "var(--color-dark-subtle)",
                   paddingLeft: "0.625rem",
                 }}
               >
                 <ArrowBackIosIcon />
-              </Button>
+              </BackButton>
             </div>
           </div>
           <div className="flex flex-col gap-xs max-md:mt-xl md:mt-md">

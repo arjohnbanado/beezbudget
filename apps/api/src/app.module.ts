@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter.js';
 import { PrismaModule } from './database/prisma/prisma.module.js';
 import { UsersModule } from './modules/users/users.module.js';
+import { AccountsModule } from './modules/accounts/accounts.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -30,6 +31,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     EmailModule,
     PrismaModule,
     UsersModule,
+    AccountsModule,
   ],
   controllers: [AppController],
 

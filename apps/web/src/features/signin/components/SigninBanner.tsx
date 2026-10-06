@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import BackButton from "@/src/components/shared/BackButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Image from "next/image";
 import beezwelcoming from "@/public/images/illustrations/beez-over-the-table.svg";
@@ -10,18 +10,15 @@ export default function SigninBanner() {
   return (
     <section className="bg-brand-subtle rounded-tl-lg rounded-bl-lg hidden md:block md:basis-2/4">
       <div className="flex items-center justify-between px-xs mt-xl">
-        <Button
-          type="button"
-          variant="text"
+        <BackButton
           aria-label="Go back"
-          href="/"
           sx={{
             color: "var(--color-dark-subtle)",
             paddingLeft: "0.625rem",
           }}
         >
           <ArrowBackIosIcon />
-        </Button>
+        </BackButton>
         <BeezBudgetLogo size={BeezBudgetLogoSize.EXTRASMALL} />
         <span>{/* Intentionally leave space for alignment */}</span>
       </div>
