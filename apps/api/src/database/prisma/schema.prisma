@@ -90,14 +90,15 @@ model VerificationToken {
 
 model AccountType {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String?  @map("user_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
   name      String   @db.VarChar(100)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp()
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp()
 
-  user     User?     @relation(fields: [userId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
   accounts Account[]
 
+  @@unique([userId, name])
   @@index([userId])
   @@index([name])
   @@map("account_types")

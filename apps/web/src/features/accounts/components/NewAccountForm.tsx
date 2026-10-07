@@ -11,6 +11,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import OpeningBalanceInput from "./OpeningBalanceInput";
 
 export type FormFields = z.infer<typeof schema>;
 
@@ -30,35 +31,34 @@ const schema = z.object({
   opening_balance: z
     .string()
     .trim()
-    .regex(
-      /^(?:\d{1,16})(?:\.\d{1,4})?$/,
-      "Enter a valid amount with up to 4 decimal places.",
-    )
+    .regex(/^(?:\d{1,16})(?:\.\d{1,2})?$/, "Enter a valid amount.")
     .or(z.literal("")),
   opening_balance_sign: z.enum(["positive", "negative"]),
-  currency_code: z.string().regex(/^[A-Z]{3}$/, "Select a valid currency."),
-  icon_key: z.string().trim().min(1, "Select an icon.").max(100),
+  // currency_code: z.string().regex(/^[A-Z]{3}$/, "Select a valid currency."),
+  // icon_key: z.string().trim().min(1, "Select an icon.").max(100),
 });
 
 export default function NewAccountForm() {
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      account_number: "",
-      name: "",
-      opening_balance_sign: "positive",
       account_type: "Cash",
+      name: "",
+      account_number: "",
+      opening_balance: "0",
+      opening_balance_sign: "positive",
     },
   });
 
   const {
-    setError,
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {};
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -125,6 +125,8 @@ export default function NewAccountForm() {
               />
             )}
           />
+          {/* OPENING BALANCE */}
+          <OpeningBalanceInput />
         </div>
       </form>
     </FormProvider>
