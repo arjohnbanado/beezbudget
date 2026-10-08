@@ -95,12 +95,7 @@ export default function CurrencyOptions({
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="mb-xl">
-        <h1 className="text-lg font-bold text-center">
-          Choose account currency
-        </h1>
-      </div>
+    <>
       <div className="grow overflow-y-auto">
         <Controller
           control={control}
@@ -142,6 +137,6 @@ export default function CurrencyOptions({
           )}
         />
       </div>
-    </div>
+    </>
   );
 }
