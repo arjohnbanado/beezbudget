@@ -10,6 +10,7 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter.
 import { PrismaModule } from './database/prisma/prisma.module.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { AccountsModule } from './modules/accounts/accounts.module.js';
+import { CurrenciesModule } from './modules/currencies/currencies.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -32,6 +33,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     PrismaModule,
     UsersModule,
     AccountsModule,
+    CurrenciesModule,
   ],
   controllers: [AppController],
 

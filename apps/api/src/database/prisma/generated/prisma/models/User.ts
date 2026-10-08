@@ -500,10 +500,6 @@ export type UserUncheckedUpdateManyWithoutPreferredCurrencyNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
 }
@@ -534,12 +530,10 @@ export type UserCreateNestedOneWithoutAccountTypesInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneWithoutAccountTypesNestedInput = {
+export type UserUpdateOneRequiredWithoutAccountTypesNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAccountTypesInput, Prisma.UserUncheckedCreateWithoutAccountTypesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountTypesInput
   upsert?: Prisma.UserUpsertWithoutAccountTypesInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountTypesInput, Prisma.UserUpdateWithoutAccountTypesInput>, Prisma.UserUncheckedUpdateWithoutAccountTypesInput>
 }

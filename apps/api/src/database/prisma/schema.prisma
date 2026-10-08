@@ -29,6 +29,7 @@ enum AccountStatus {
 model Currency {
   code         String  @id @db.Char(3)
   name         String  @db.VarChar(100)
+  symbol       String? @db.VarChar(10)
   minorUnit    Int     @map("minor_unit") @db.SmallInt
   isSelectable Boolean @default(true) @map("is_selectable")
 

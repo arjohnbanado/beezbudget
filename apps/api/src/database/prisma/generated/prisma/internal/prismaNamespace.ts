@@ -908,6 +908,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const CurrencyScalarFieldEnum = {
   code: 'code',
   name: 'name',
+  symbol: 'symbol',
   minorUnit: 'minorUnit',
   isSelectable: 'isSelectable'
 } as const

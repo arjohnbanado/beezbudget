@@ -34,7 +34,7 @@ const schema = z.object({
     .regex(/^(?:\d{1,16})(?:\.\d{1,2})?$/, "Enter a valid amount.")
     .or(z.literal("")),
   opening_balance_sign: z.enum(["positive", "negative"]),
-  // currency_code: z.string().regex(/^[A-Z]{3}$/, "Select a valid currency."),
+  currency_code: z.string().regex(/^[A-Z]{3}$/, "Select a valid currency."),
   // icon_key: z.string().trim().min(1, "Select an icon.").max(100),
 });
 
@@ -47,6 +47,7 @@ export default function NewAccountForm() {
       account_number: "",
       opening_balance: "0",
       opening_balance_sign: "positive",
+      currency_code: "PHP",
     },
   });
 

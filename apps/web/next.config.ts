@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-
+  images: {
+    qualities: [10, 75],
+  },
   async rewrites() {
     const backendUrl = process.env.BACKEND_URL || "";
 
