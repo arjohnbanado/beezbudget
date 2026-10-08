@@ -14,8 +14,9 @@ import Image from "next/image";
 import { useState } from "react";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
+import CurrencySearch from "./CurrencySearch";
 
-interface CurrencyType {
+export interface CurrencyType {
   code: string;
   name: string;
   symbol: string;
@@ -75,7 +76,7 @@ export default function CurrencyOptions({
       </div>
     );
   }
-  if (error) {
+  if (error || !data) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center p-md">
         <p className="text-base font-medium">Failed to load currencies.</p>
@@ -93,10 +94,18 @@ export default function CurrencyOptions({
       </div>
     );
   }
-
   return (
-    <>
-      <div className="grow overflow-y-auto">
+    <div className="flex flex-col h-full">
+      <div className="mb-xl">
+        <h1 className="text-lg font-bold text-center">
+          Choose account currency
+        </h1>
+      </div>
+      <CurrencySearch
+        currencies={data}
+        onCloseCurrencyOptions={onCloseCurrencyOptions}
+      />
+      {/* <div className="grow overflow-y-auto">
         <Controller
           control={control}
           name="currency_code"
@@ -136,7 +145,7 @@ export default function CurrencyOptions({
             </RadioGroup>
           )}
         />
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 }

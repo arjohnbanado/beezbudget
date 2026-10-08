@@ -142,16 +142,9 @@ export default function OpeningBalanceInput() {
           onClick={handleCloseCurrencyOptions}
         >
           <BackDropView>
-            <div className="flex flex-col h-full">
-              <div className="mb-xl">
-                <h1 className="text-lg font-bold text-center">
-                  Choose account currency
-                </h1>
-              </div>
-              <CurrencyOptions
-                onCloseCurrencyOptions={handleCloseCurrencyOptions}
-              />
-            </div>
+            <CurrencyOptions
+              onCloseCurrencyOptions={handleCloseCurrencyOptions}
+            />
           </BackDropView>
         </Backdrop>
       )}
