@@ -54,7 +54,7 @@ function FilteredCurrencyOptions({
             labelPlacement="start"
             sx={{
               width: "100%",
-              padding: "var(--spacing-xs)",
+              padding: "var(--spacing-xs) 0",
               justifyContent: "space-between",
               margin: 0,
               borderBottom: "2px solid var(--color-canvas)",

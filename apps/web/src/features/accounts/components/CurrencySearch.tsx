@@ -6,6 +6,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FormFields } from "./NewAccountForm";
 import { CurrencyType } from "./CurrencyOptions";
 import FilteredCurrencyOptions from "./FilteredCurrencyOptions";
+import SearchOffOutlinedIcon from "@mui/icons-material/SearchOffOutlined";
 
 export default function CurrencySearch({
   currencies,
@@ -16,6 +17,7 @@ export default function CurrencySearch({
 }) {
   const [query, setQuery] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
+
   const { control } = useFormContext<FormFields>();
 
   useEffect(() => {
@@ -40,11 +42,11 @@ export default function CurrencySearch({
   }, [debouncedQuery]);
 
   return (
-    <div>
-      <div>
+    <div className="grow min-h-0 flex flex-col">
+      <div className="mb-lg">
         <TextField
           id="search-input"
-          label="Search"
+          label="Search currency..."
           value={query}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setQuery(event.target.value);
@@ -55,25 +57,38 @@ export default function CurrencySearch({
         />
       </div>
       <div className="grow overflow-y-auto">
-        <Controller
-          control={control}
-          name="currency_code"
-          render={({ field }) => (
-            <RadioGroup
-              {...field}
-              aria-labelledby="currency-options"
-              name="currency-options-radio-group"
-              sx={{
-                flexWrap: "nowrap",
-              }}
-            >
-              <FilteredCurrencyOptions
-                currencies={filteredCurrencies}
-                onCloseCurrencyOptions={onCloseCurrencyOptions}
-              />
-            </RadioGroup>
-          )}
-        />
+        {filteredCurrencies.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-dark-subtle gap-sm text-center">
+            {query.length !== 0 && (
+              <>
+                <SearchOffOutlinedIcon sx={{ fontSize: 48, opacity: 0.5 }} />
+                <p className="text-sm text-center line-clamp-3 break-all px-sm">
+                  No currency found for "{query}"
+                </p>
+              </>
+            )}
+          </div>
+        ) : (
+          <Controller
+            control={control}
+            name="currency_code"
+            render={({ field }) => (
+              <RadioGroup
+                {...field}
+                aria-labelledby="currency-options"
+                name="currency-options-radio-group"
+                sx={{
+                  flexWrap: "nowrap",
+                }}
+              >
+                <FilteredCurrencyOptions
+                  currencies={filteredCurrencies}
+                  onCloseCurrencyOptions={onCloseCurrencyOptions}
+                />
+              </RadioGroup>
+            )}
+          />
+        )}
       </div>
     </div>
   );

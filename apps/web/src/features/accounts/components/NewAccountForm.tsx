@@ -12,6 +12,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import OpeningBalanceInput from "./OpeningBalanceInput";
+import AccountIconInput from "./AccountIconInput";
 
 export type FormFields = z.infer<typeof schema>;
 
@@ -35,7 +36,7 @@ const schema = z.object({
     .or(z.literal("")),
   opening_balance_sign: z.enum(["positive", "negative"]),
   currency_code: z.string().regex(/^[A-Z]{3}$/, "Select a valid currency."),
-  // icon_key: z.string().trim().min(1, "Select an icon.").max(100),
+  icon_key: z.string().trim().min(1, "Select an icon.").max(100),
 });
 
 export default function NewAccountForm() {
@@ -48,6 +49,7 @@ export default function NewAccountForm() {
       opening_balance: "0",
       opening_balance_sign: "positive",
       currency_code: "PHP",
+      icon_key: "wallet",
     },
   });
 
@@ -75,7 +77,7 @@ export default function NewAccountForm() {
             </div>
           </Button>
         </div>
-        <div className="mt-xl flex flex-col gap-lg">
+        <div className="my-xl flex flex-col gap-lg">
           {/* ACCOUNT TYPE */}
           <AccountTypeInput />
 
@@ -114,7 +116,7 @@ export default function NewAccountForm() {
                 id="add-new-account-form-name-account-number"
                 variant="outlined"
                 helperText={
-                  errors.account_number ? errors.account_number.message : " "
+                  errors.account_number ? errors.account_number.message : ""
                 }
                 error={Boolean(errors.account_number)}
                 disabled={isSubmitting}
@@ -128,6 +130,9 @@ export default function NewAccountForm() {
           />
           {/* OPENING BALANCE */}
           <OpeningBalanceInput />
+
+          {/* ACCOUNT ICON */}
+          <AccountIconInput />
         </div>
       </form>
     </FormProvider>
