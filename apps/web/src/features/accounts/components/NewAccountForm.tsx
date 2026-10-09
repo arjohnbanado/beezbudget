@@ -13,13 +13,16 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import OpeningBalanceInput from "./OpeningBalanceInput";
 import AccountIconInput from "./AccountIconInput";
+import axios from "axios";
+import { useToast } from "@/src/providers/ToastProvider";
+import { getApiErrorMessage } from "@/src/utils/errors";
 
 export type FormFields = z.infer<typeof schema>;
 
 const schema = z.object({
   account_type: z
     .string()
-    .min(1, "Account type name is required.")
+    .min(1, "Account type is required.")
     .max(100, "Account type name must be 100 characters or fewer."),
   name: z
     .string()
@@ -39,36 +42,76 @@ const schema = z.object({
   icon_key: z.string().trim().min(1, "Select an icon.").max(100),
 });
 
-export default function NewAccountForm() {
+export default function NewAccountForm({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+}) {
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      account_type: "Cash",
+      account_type: "",
       name: "",
       account_number: "",
-      opening_balance: "0",
+      opening_balance: "",
       opening_balance_sign: "positive",
       currency_code: "PHP",
       icon_key: "wallet",
     },
   });
-
+  const { showToast } = useToast();
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = methods;
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
+    try {
+      let balance: number | null = null;
+      if (data.opening_balance !== "") {
+        balance = parseFloat(data.opening_balance);
+        if (data.opening_balance_sign === "negative") {
+          balance = -balance;
+        }
+      }
+
+      const payload = {
+        account_type: data.account_type,
+        name: data.name,
+        account_number: data.account_number,
+        opening_balance: balance,
+        currency_code: data.currency_code,
+        icon_key: data.icon_key,
+      };
+
+      await axios.post("/api/v1/accounts", payload, {
+        withCredentials: true,
+      });
+
+      if (onSuccess) {
+        showToast({
+          message: "Account saved successfully.",
+          severity: "success",
+        });
+        reset();
+        onSuccess();
+      }
+    } catch (error) {
+      showToast({
+        message: getApiErrorMessage(error),
+        severity: "error",
+      });
+    }
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-bold">Create new account</h1>
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             <div className="flex justify-between items-center">
               <span>
                 <CheckIcon sx={{ width: "1.25rem" }} />
@@ -77,7 +120,7 @@ export default function NewAccountForm() {
             </div>
           </Button>
         </div>
-        <div className="my-xl flex flex-col gap-lg">
+        <div className="my-lg flex flex-col gap-lg grow overflow-y-auto py-xs">
           {/* ACCOUNT TYPE */}
           <AccountTypeInput />
 

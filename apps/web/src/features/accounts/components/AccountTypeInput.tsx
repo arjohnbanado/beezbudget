@@ -12,7 +12,10 @@ import AccountTypeOptions from "./AccountTypeOptions";
 
 export default function AccountTypeInput() {
   const [openAccountTypes, setOpenAccountTypes] = useState(false);
-  const { control } = useFormContext<FormFields>();
+  const {
+    control,
+    formState: { isSubmitting, errors },
+  } = useFormContext<FormFields>();
 
   const handleCloseTypes = () => {
     setOpenAccountTypes(false);
@@ -29,11 +32,14 @@ export default function AccountTypeInput() {
   return (
     <div>
       <TextField
+        disabled={isSubmitting}
         fullWidth
         label="Type"
         variant="outlined"
         value={accountType}
         onClick={handleOpenTypes}
+        helperText={errors.account_type ? errors.account_type.message : ""}
+        error={Boolean(errors.account_type)}
         slotProps={{
           inputLabel: {
             shrink: true,

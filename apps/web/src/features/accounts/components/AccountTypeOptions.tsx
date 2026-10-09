@@ -10,7 +10,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 interface AccountType {
   name: string;
 }
-const builtInAccountTypes = ["Cash", "Bank", "E-wallet", "Card"];
 
 const fetcher = (url: string) =>
   axios
@@ -27,7 +26,7 @@ export default function AccountTypeOptions({
   const { data, isLoading } = useSWR<AccountType[]>(
     "/api/v1/accounts/types",
     fetcher,
-    { shouldRetryOnError: false, fallback: builtInAccountTypes },
+    { shouldRetryOnError: false },
   );
 
   if (isLoading) {
@@ -38,9 +37,7 @@ export default function AccountTypeOptions({
     );
   }
 
-  const accountTypes = builtInAccountTypes
-    .concat(data?.map((d) => d.name) || [])
-    .sort();
+  const accountTypes = (data?.map((d) => d.name) || []).sort();
 
   return (
     <div>

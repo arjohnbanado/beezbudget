@@ -19,6 +19,12 @@ import type {
   CreateAccountTypeDto,
 } from './schemas/create-account-type.schema.js';
 import {
+  CreateAccountSchema,
+} from './schemas/create-account.schema.js';
+import type {
+  CreateAccountDto,
+} from './schemas/create-account.schema.js';
+import {
   ApiProblemResponses,
 } from '../../common/decorators/api-docs.decorator.js';
 import { ApiCreatedResponse } from '@nestjs/swagger';
@@ -52,4 +58,18 @@ export class AccountsController {
       createAccountTypeDto,
     );
   }
+
+  @Post()
+  @ApiCreatedResponse({
+    description: 'Account created successfully.',
+  })
+  @ApiProblemResponses(400, 401, 500)
+  async createAccount(
+    @Request() req: any,
+    @Body({ schema: CreateAccountSchema })
+    createAccountDto: CreateAccountDto,
+  ) {
+    return await this.accountsService.createAccount(req.user, createAccountDto);
+  }
 }
+

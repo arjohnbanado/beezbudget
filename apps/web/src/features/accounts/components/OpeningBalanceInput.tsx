@@ -53,6 +53,10 @@ export default function OpeningBalanceInput() {
     control,
     name: "currency_code",
   });
+  const openingBalance = useWatch({
+    control,
+    name: "opening_balance",
+  });
 
   const handleCloseCurrencyOptions = () => {
     setOpenCurrencyOptions(false);
@@ -60,6 +64,10 @@ export default function OpeningBalanceInput() {
   const handleOpenCurrencyOptions = () => {
     setOpenCurrencyOptions(true);
   };
+
+  const isBalanceZeroOrEmpty =
+    !openingBalance || openingBalance === "" || parseFloat(openingBalance) === 0;
+
   return (
     <div>
       <div>
@@ -87,7 +95,10 @@ export default function OpeningBalanceInput() {
                     <span className="pr-xs text-3xl">-</span>
                   ),
                   endAdornment: (
-                    <Button onClick={handleOpenCurrencyOptions}>
+                    <Button
+                      onClick={handleOpenCurrencyOptions}
+                      disabled={isSubmitting}
+                    >
                       <div className="p-xs flex items-center gap-xs">
                         <CurrencyFlag
                           key={currencyCode}
@@ -123,6 +134,7 @@ export default function OpeningBalanceInput() {
               {...field}
               color="primary"
               exclusive
+              disabled={isSubmitting || isBalanceZeroOrEmpty}
               aria-label="opening-balance-sign"
             >
               <ToggleButton value="negative" className="text-xs normal-case">

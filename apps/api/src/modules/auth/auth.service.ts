@@ -52,13 +52,13 @@ export class AuthService {
       }),
     ]);
 
-    // const builtInAccountTypes = ['Cash', 'Bank', 'E-wallet', 'Card'];
+    const builtInAccountTypes = ['Cash', 'Bank', 'E-wallet', 'Card'];
 
-    // builtInAccountTypes.forEach(async (builtInAccountType) => {
-    //   await this.prisma.accountType.create({
-    //     data: { name: builtInAccountType, userId: user[0].id },
-    //   });
-    // });
+    builtInAccountTypes.forEach(async (builtInAccountType) => {
+      await this.prisma.accountType.create({
+        data: { name: builtInAccountType, userId: user[0].id },
+      });
+    });
 
     return token;
   }

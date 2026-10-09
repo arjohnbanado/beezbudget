@@ -2,10 +2,11 @@
 
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Backdrop } from "@mui/material";
+import { Backdrop, Button } from "@mui/material";
 import { useState } from "react";
 import NewAccountForm from "./NewAccountForm";
 import BackDropView from "@/src/components/ui/BackDropView";
+import { CloseOutlined } from "@mui/icons-material";
 
 export default function AddNewAccount() {
   const [openAccountForm, setOpenAccountForm] = useState(false);
@@ -32,10 +33,21 @@ export default function AddNewAccount() {
       <Backdrop
         sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
         open={openAccountForm}
-        onClick={handleClose}
       >
         <BackDropView>
-          <NewAccountForm />
+          <div className="absolute top-[6%] left-[5%] text-light">
+            <Button
+              type="button"
+              variant="text"
+              onClick={handleClose}
+              color="inherit"
+            >
+              <span>
+                <CloseOutlined />
+              </span>
+            </Button>
+          </div>
+          <NewAccountForm onSuccess={handleClose} />
         </BackDropView>
       </Backdrop>
     </div>
