@@ -28,8 +28,8 @@ export default function AccountListItem({ account }: { account: Account }) {
             )}
           </AccountIconView>
         </div>
-        <div className="flex grow">
-          <div className="w-[50%] flex flex-col overflow-hidden">
+        <div className="flex justify-between grow">
+          <div className="w-48 overflow-hidden flex flex-col">
             <span className="truncate">{account.name}</span>
             <span className="text-xs">****{account.account_number_last4}</span>
             <div className="text-xs">
@@ -41,7 +41,7 @@ export default function AccountListItem({ account }: { account: Account }) {
               </span>
             </div>
           </div>
-          <div className="grow">a</div>
+          <div>a</div>
         </div>
       </div>
     </Button>

@@ -59,7 +59,7 @@ async function AccountsListContent() {
     }
 
     return (
-      <div className="flex flex-col gap-sm grow min-w-0 overflow-y-auto overflow-x-hidden">
+      <div className="flex flex-col gap-sm grow min-w-0 overflow-y-auto">
         {/* TODO: Implement the actual list of accounts here */}
         {/* Example: */}
         {accounts.map((account) => (
