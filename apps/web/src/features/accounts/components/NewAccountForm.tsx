@@ -69,6 +69,7 @@ export default function NewAccountForm({
   } = methods;
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
     try {
       let balance: number | null = null;
       if (data.opening_balance !== "") {

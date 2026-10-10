@@ -12,6 +12,7 @@ import {
   encryptSensitiveField,
   parseSensitiveFieldEncryptionKey,
 } from '../../common/utils/field-encryption.util.js';
+import { symbol } from 'zod';
 
 @Injectable()
 export class AccountsService {
@@ -46,6 +47,7 @@ export class AccountsService {
       },
       include: {
         accountType: true,
+        currency: true,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -63,6 +65,7 @@ export class AccountsService {
       status: account.status,
       created_at: account.createdAt,
       updated_at: account.updatedAt,
+      currency_symbol: account.currency.symbol ? account.currency.symbol : null,
     }));
   }
 

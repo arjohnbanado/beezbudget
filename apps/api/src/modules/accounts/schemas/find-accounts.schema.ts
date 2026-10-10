@@ -7,6 +7,7 @@ export const FindAccountsResponseSchema = z
     account_type: z.string(),
     account_number_last4: z.string().nullable(),
     opening_balance: z.number().nullable(),
+    currency_symbol: z.string().nullable(),
     currency_code: z.string(),
     icon_key: z.string(),
     status: z.enum(['active', 'inactive']),
