@@ -35,7 +35,7 @@ export default function AddNewAccount() {
         open={openAccountForm}
       >
         <BackDropView>
-          <div className="absolute top-[6%] left-[5%] text-light">
+          <div className="absolute top-[6%] left-[5%] text-light md:hidden">
             <Button
               type="button"
               variant="text"
@@ -47,7 +47,7 @@ export default function AddNewAccount() {
               </span>
             </Button>
           </div>
-          <NewAccountForm onSuccess={handleClose} />
+          <NewAccountForm onCloseForm={handleClose} />
         </BackDropView>
       </Backdrop>
     </div>

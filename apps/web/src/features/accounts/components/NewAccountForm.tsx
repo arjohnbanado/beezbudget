@@ -16,6 +16,7 @@ import AccountIconInput from "./AccountIconInput";
 import axios from "axios";
 import { useToast } from "@/src/providers/ToastProvider";
 import { getApiErrorMessage } from "@/src/utils/errors";
+import { CloseOutlined } from "@mui/icons-material";
 
 export type FormFields = z.infer<typeof schema>;
 
@@ -43,9 +44,9 @@ const schema = z.object({
 });
 
 export default function NewAccountForm({
-  onSuccess,
+  onCloseForm,
 }: {
-  onSuccess?: () => void;
+  onCloseForm?: () => void;
 }) {
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -90,13 +91,13 @@ export default function NewAccountForm({
         withCredentials: true,
       });
 
-      if (onSuccess) {
+      if (onCloseForm) {
         showToast({
           message: "Account saved successfully.",
           severity: "success",
         });
         reset();
-        onSuccess();
+        onCloseForm();
       }
     } catch (error) {
       showToast({
@@ -110,6 +111,19 @@ export default function NewAccountForm({
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
         <div className="flex justify-between items-center">
+          <Button
+            type="button"
+            disabled={isSubmitting}
+            className="hidden md:block text-error"
+            onClick={onCloseForm}
+          >
+            <div className="flex justify-between items-center">
+              <span>
+                <CloseOutlined sx={{ width: "1.25rem" }} />
+              </span>
+              <span>Cancel</span>
+            </div>
+          </Button>
           <h1 className="text-lg font-bold">Create new account</h1>
           <Button type="submit" disabled={isSubmitting}>
             <div className="flex justify-between items-center">

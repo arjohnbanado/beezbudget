@@ -13,20 +13,14 @@ import {
   FindAccountTypesResponseSchema,
 } from './schemas/find-account-types.schema.js';
 import {
-  CreateAccountTypeSchema,
-} from './schemas/create-account-type.schema.js';
-import type {
-  CreateAccountTypeDto,
-} from './schemas/create-account-type.schema.js';
-import {
-  CreateAccountSchema,
-} from './schemas/create-account.schema.js';
-import type {
-  CreateAccountDto,
-} from './schemas/create-account.schema.js';
-import {
-  ApiProblemResponses,
-} from '../../common/decorators/api-docs.decorator.js';
+  FindAccountsResponseDto,
+  FindAccountsResponseSchema,
+} from './schemas/find-accounts.schema.js';
+import { CreateAccountTypeSchema } from './schemas/create-account-type.schema.js';
+import type { CreateAccountTypeDto } from './schemas/create-account-type.schema.js';
+import { CreateAccountSchema } from './schemas/create-account.schema.js';
+import type { CreateAccountDto } from './schemas/create-account.schema.js';
+import { ApiProblemResponses } from '../../common/decorators/api-docs.decorator.js';
 import { ApiCreatedResponse } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
@@ -59,6 +53,16 @@ export class AccountsController {
     );
   }
 
+  @Get()
+  @ApiCreatedResponse({
+    description: 'Accounts fetched successfully.',
+  })
+  @ApiProblemResponses(400, 401, 500)
+  async findAccounts(@Request() req: any): Promise<FindAccountsResponseDto> {
+    const accounts = await this.accountsService.findAccounts(req.user);
+    return FindAccountsResponseSchema.parse(accounts);
+  }
+
   @Post()
   @ApiCreatedResponse({
     description: 'Account created successfully.',
@@ -68,8 +72,7 @@ export class AccountsController {
     @Request() req: any,
     @Body({ schema: CreateAccountSchema })
     createAccountDto: CreateAccountDto,
-  ) {
-    return await this.accountsService.createAccount(req.user, createAccountDto);
+  ): Promise<void> {
+    await this.accountsService.createAccount(req.user, createAccountDto);
   }
 }
-

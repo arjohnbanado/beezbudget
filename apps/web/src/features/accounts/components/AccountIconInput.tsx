@@ -39,6 +39,11 @@ export default function AccountIconInput() {
           error={Boolean(errors.icon_key)}
           disabled={isSubmitting}
           onClick={handleOpenIconOptions}
+          sx={{
+            "& .MuiInputBase-input": {
+              cursor: "pointer",
+            },
+          }}
           slotProps={{
             inputLabel: {
               shrink: true,
@@ -46,7 +51,7 @@ export default function AccountIconInput() {
             input: {
               readOnly: true,
               endAdornment: (
-                <div className="flex items-center gap-xs">
+                <div className="flex items-center gap-xs cursor-pointer">
                   <AccountIconView>
                     {selectedIcon?.icon ? (
                       <selectedIcon.icon size={24} className="text-light" />

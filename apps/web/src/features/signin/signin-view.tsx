@@ -14,7 +14,7 @@ export default function SigninView() {
           <div className="relative -mx-lg -mt-lg sm:-mx-xl sm:-mt-xl md:hidden">
             <Image
               src={bbsigninheaderbanner}
-              alt="BeezBudget security theme header banner for credentials setup form"
+              alt="BeezBudget Beez joyful theme header banner for sign in page"
               className="object-cover md:rounded-tr-lg md:rounded-tl-lg"
             />
             <div className="pl-lg flex items-center w-[100%] h-[100%] absolute top-0 left-0 bg-linear-to-r from-brand-strong/75 from-70% to-brand-default/20 md:rounded-tr-lg md:rounded-tl-lg">

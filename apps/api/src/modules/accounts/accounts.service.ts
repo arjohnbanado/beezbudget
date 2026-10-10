@@ -39,6 +39,33 @@ export class AccountsService {
     return accountTypes;
   }
 
+  async findAccounts(user: any) {
+    const accounts = await this.prisma.account.findMany({
+      where: {
+        userId: user.userId,
+      },
+      include: {
+        accountType: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return accounts.map((account) => ({
+      id: account.id,
+      name: account.name,
+      account_type: account.accountType.name,
+      account_number_last4: account.accountNumberLast4,
+      opening_balance: account.openingBalance
+        ? Number(account.openingBalance)
+        : null,
+      currency_code: account.currencyCode,
+      icon_key: account.iconKey,
+      status: account.status,
+      created_at: account.createdAt,
+      updated_at: account.updatedAt,
+    }));
+  }
+
   async createAccountType(
     user: any,
     createAccountTypeDto: CreateAccountTypeDto,
