@@ -2,6 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 
-export async function retryFetchAccountsAction() {
+export async function revalidateAccountsAction() {
   revalidatePath("/accounts");
 }

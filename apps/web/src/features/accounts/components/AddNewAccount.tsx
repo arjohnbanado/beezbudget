@@ -26,7 +26,7 @@ export default function AddNewAccount() {
           icon={AddOutlinedIcon}
           type="button"
           iconPosition="left"
-          textClassName="p-none"
+          textClassName="p-none lg:text-xs"
         />
       </div>
 

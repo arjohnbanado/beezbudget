@@ -17,6 +17,7 @@ import axios from "axios";
 import { useToast } from "@/src/providers/ToastProvider";
 import { getApiErrorMessage } from "@/src/utils/errors";
 import { CloseOutlined } from "@mui/icons-material";
+import { revalidateAccountsAction } from "../actions";
 
 export type FormFields = z.infer<typeof schema>;
 
@@ -69,7 +70,6 @@ export default function NewAccountForm({
   } = methods;
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
     try {
       let balance: number | null = null;
       if (data.opening_balance !== "") {
@@ -91,6 +91,8 @@ export default function NewAccountForm({
       await axios.post("/api/v1/accounts", payload, {
         withCredentials: true,
       });
+
+      await revalidateAccountsAction();
 
       if (onCloseForm) {
         showToast({

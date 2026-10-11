@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import BeezLogo, { BeezLogoSize } from "../BeezLogo";
 
-const drawerItems: {
+export const drawerItems: {
   id: string;
   icon: SvgIconComponent;
   name: string;

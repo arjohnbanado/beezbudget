@@ -7,6 +7,7 @@ import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
+import { customAlphabeticalSort } from "@/src/utils/sorting";
 
 interface AccountType {
   name: string;
@@ -57,7 +58,9 @@ export default function AccountTypeOptions({
     );
   }
 
-  const accountTypes = (data?.map((d) => d.name) || []).sort();
+  const accountTypes = (data?.map((d) => d.name) || []).sort(
+    customAlphabeticalSort,
+  );
 
   return (
     <div>
