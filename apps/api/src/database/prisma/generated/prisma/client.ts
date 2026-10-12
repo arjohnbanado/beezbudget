@@ -71,3 +71,8 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type ExchangeRate = Prisma.ExchangeRateModel
+/**
+ * Model RefreshToken
+ * 
+ */
+export type RefreshToken = Prisma.RefreshTokenModel

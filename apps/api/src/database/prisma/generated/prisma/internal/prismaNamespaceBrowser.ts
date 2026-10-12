@@ -56,7 +56,8 @@ export const ModelName = {
   VerificationToken: 'VerificationToken',
   AccountType: 'AccountType',
   Account: 'Account',
-  ExchangeRate: 'ExchangeRate'
+  ExchangeRate: 'ExchangeRate',
+  RefreshToken: 'RefreshToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -160,6 +161,21 @@ export const ExchangeRateScalarFieldEnum = {
 } as const
 
 export type ExchangeRateScalarFieldEnum = (typeof ExchangeRateScalarFieldEnum)[keyof typeof ExchangeRateScalarFieldEnum]
+
+
+export const RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  familyId: 'familyId',
+  tokenHash: 'tokenHash',
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt',
+  familyExpiresAt: 'familyExpiresAt',
+  consumedAt: 'consumedAt',
+  revokedAt: 'revokedAt'
+} as const
+
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
 export const SortOrder = {
