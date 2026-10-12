@@ -4,7 +4,9 @@ import { memo, useState } from "react";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import Image from "next/image";
 import { CurrencyType } from "./CurrencyOptions";
-import { FormControlLabel, Radio } from "@mui/material";
+import { List, ListItemButton, Radio } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import { FormFields } from "./NewAccountForm";
 
 const CurrencyOptionLabel = ({ currency }: { currency: CurrencyType }) => {
   const [imageError, setImageError] = useState(false);
@@ -42,33 +44,43 @@ function FilteredCurrencyOptions({
   currencies: CurrencyType[];
   onCloseCurrencyOptions: () => void;
 }) {
+  const { setValue, watch } = useFormContext<FormFields>();
+  const selectedCurrency = watch("currency_code");
+
   return (
-    <>
+    <List disablePadding>
       {currencies.map((currency) => {
+        const isSelected = selectedCurrency === currency.code;
         return (
-          <FormControlLabel
+          <ListItemButton
             key={currency.code}
-            value={currency.code}
-            control={<Radio size="small" />}
-            label={<CurrencyOptionLabel currency={currency} />}
-            labelPlacement="start"
+            selected={isSelected}
+            onClick={() => {
+              setValue("currency_code", currency.code, { shouldValidate: true });
+              onCloseCurrencyOptions();
+            }}
             sx={{
               width: "100%",
               padding: "var(--spacing-xs) 0",
               justifyContent: "space-between",
-              margin: 0,
               borderBottom: "2px solid var(--color-canvas)",
               transition: "all 0.2s ease-in-out",
               "&:hover": {
                 backgroundColor: "var(--color-brand-subtle)",
-                cursor: "pointer",
               },
             }}
-            onChange={onCloseCurrencyOptions}
-          />
+          >
+            <CurrencyOptionLabel currency={currency} />
+            <Radio
+              checked={isSelected}
+              size="small"
+              tabIndex={-1}
+              disableRipple
+            />
+          </ListItemButton>
         );
       })}
-    </>
+    </List>
   );
 }
 

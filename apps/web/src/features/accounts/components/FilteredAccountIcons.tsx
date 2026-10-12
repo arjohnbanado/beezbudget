@@ -1,9 +1,9 @@
 "use client";
 
 import { AccountIcon } from "@/src/utils/account-icons";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { FormFields } from "./NewAccountForm";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { List, ListItemButton, Radio } from "@mui/material";
 import { memo } from "react";
 import AccountIconView from "@/src/components/shared/AccountIconView";
 
@@ -14,57 +14,48 @@ function AccountIconOptions({
   accountIcons: AccountIcon[];
   onCloseIconOptions: () => void;
 }) {
-  const { control } = useFormContext<FormFields>();
+  const { setValue, watch } = useFormContext<FormFields>();
+  const selectedIcon = watch("icon_key");
 
   return (
-    <>
-      <Controller
-        control={control}
-        name="icon_key"
-        render={({ field }) => (
-          <RadioGroup
-            {...field}
-            aria-labelledby="account-icons"
-            name="account-icons-radio-group"
+    <List disablePadding>
+      {accountIcons.map((accountIcon) => {
+        const isSelected = selectedIcon === accountIcon.key;
+        return (
+          <ListItemButton
+            key={accountIcon.key}
+            selected={isSelected}
+            onClick={() => {
+              setValue("icon_key", accountIcon.key, { shouldValidate: true });
+              onCloseIconOptions();
+            }}
             sx={{
-              flexWrap: "nowrap",
+              width: "100%",
+              padding: "var(--spacing-xs) 0",
+              justifyContent: "space-between",
+              borderBottom: "2px solid var(--color-canvas)",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--color-brand-subtle)",
+              },
             }}
           >
-            {accountIcons.map((accountIcon) => {
-              return (
-                <FormControlLabel
-                  key={accountIcon.key}
-                  value={accountIcon.key}
-                  control={<Radio />}
-                  label={
-                    <div className="flex items-center gap-sm text-sm">
-                      <AccountIconView>
-                        <accountIcon.icon size={24} className="text-light" />
-                      </AccountIconView>
-                      <span>{accountIcon.name}</span>
-                    </div>
-                  }
-                  labelPlacement="start"
-                  sx={{
-                    width: "100%",
-                    padding: "var(--spacing-xs) 0",
-                    justifyContent: "space-between",
-                    margin: 0,
-                    borderBottom: "2px solid var(--color-canvas)",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--color-brand-subtle)",
-                      cursor: "pointer",
-                    },
-                  }}
-                  onChange={onCloseIconOptions}
-                />
-              );
-            })}
-          </RadioGroup>
-        )}
-      />
-    </>
+            <div className="flex items-center gap-sm text-sm">
+              <AccountIconView>
+                <accountIcon.icon size={24} className="text-light" />
+              </AccountIconView>
+              <span>{accountIcon.name}</span>
+            </div>
+            <Radio
+              checked={isSelected}
+              size="small"
+              tabIndex={-1}
+              disableRipple
+            />
+          </ListItemButton>
+        );
+      })}
+    </List>
   );
 }
 

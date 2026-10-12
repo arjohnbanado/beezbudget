@@ -1,9 +1,9 @@
 "use client";
 
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import useSWR from "swr";
 import { FormFields } from "./NewAccountForm";
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { List, ListItemButton, Radio } from "@mui/material";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
@@ -23,7 +23,8 @@ export default function AccountTypeOptions({
 }: {
   onCloseTypes: () => void;
 }) {
-  const { control } = useFormContext<FormFields>();
+  const { setValue, watch } = useFormContext<FormFields>();
+  const selectedType = watch("account_type");
 
   const { data, error, isLoading, mutate } = useSWR<AccountType[]>(
     "/api/v1/accounts/types",
@@ -63,46 +64,38 @@ export default function AccountTypeOptions({
   );
 
   return (
-    <div>
-      <Controller
-        control={control}
-        name="account_type"
-        render={({ field }) => (
-          <RadioGroup
-            {...field}
-            aria-labelledby="account-types"
-            name="account-types-radio-group"
+    <List disablePadding>
+      {accountTypes.map((accountType) => {
+        const isSelected = selectedType === accountType;
+        return (
+          <ListItemButton
+            key={accountType}
+            selected={isSelected}
+            onClick={() => {
+              setValue("account_type", accountType, { shouldValidate: true });
+              onCloseTypes();
+            }}
             sx={{
-              flexWrap: "nowrap",
+              width: "100%",
+              padding: "var(--spacing-xs)",
+              justifyContent: "space-between",
+              borderBottom: "2px solid var(--color-canvas)",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "var(--color-brand-subtle)",
+              },
             }}
           >
-            {accountTypes.map((accountType) => {
-              return (
-                <FormControlLabel
-                  key={accountType}
-                  value={accountType}
-                  control={<Radio />}
-                  label={accountType}
-                  labelPlacement="start"
-                  sx={{
-                    width: "100%",
-                    padding: "var(--spacing-xs)",
-                    justifyContent: "space-between",
-                    margin: 0,
-                    borderBottom: "2px solid var(--color-canvas)",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      backgroundColor: "var(--color-brand-subtle)",
-                      cursor: "pointer",
-                    },
-                  }}
-                  onChange={onCloseTypes}
-                />
-              );
-            })}
-          </RadioGroup>
-        )}
-      />
-    </div>
+            <span className="text-sm font-medium">{accountType}</span>
+            <Radio
+              checked={isSelected}
+              size="small"
+              tabIndex={-1}
+              disableRipple
+            />
+          </ListItemButton>
+        );
+      })}
+    </List>
   );
 }

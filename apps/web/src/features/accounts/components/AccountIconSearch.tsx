@@ -40,11 +40,17 @@ export default function AccountIconSearch({
       <div className="mb-lg flex flex-col gap-sm">
         <h1 className="text-lg font-bold text-center">Choose account icon</h1>
         <TextField
+          autoFocus
           id="search-icon-input"
           label="Search icon..."
           value={query}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setQuery(event.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
           }}
           fullWidth
           variant="outlined"
@@ -58,7 +64,7 @@ export default function AccountIconSearch({
               <>
                 <SearchOffOutlinedIcon sx={{ fontSize: 48, opacity: 0.5 }} />
                 <p className="text-sm text-center line-clamp-3 break-all px-sm">
-                  No icon found for "{query}"
+                  No icon found for &quot;{query}&quot;
                 </p>
               </>
             )}

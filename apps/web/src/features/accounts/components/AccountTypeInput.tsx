@@ -1,28 +1,19 @@
 "use client";
 
-import { Backdrop, InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useState } from "react";
-import BackDropView from "@/src/components/ui/BackDropView";
-
-import AddNewAccountType from "./AddNewAccountType";
 import { useFormContext, useWatch } from "react-hook-form";
 import { FormFields } from "./NewAccountForm";
-import AccountTypeOptions from "./AccountTypeOptions";
 
-export default function AccountTypeInput() {
-  const [openAccountTypes, setOpenAccountTypes] = useState(false);
+export default function AccountTypeInput({
+  onOpenTypes,
+}: {
+  onOpenTypes: () => void;
+}) {
   const {
     control,
     formState: { isSubmitting, errors },
   } = useFormContext<FormFields>();
-
-  const handleCloseTypes = () => {
-    setOpenAccountTypes(false);
-  };
-  const handleOpenTypes = () => {
-    setOpenAccountTypes(true);
-  };
 
   const accountType = useWatch({
     control,
@@ -30,52 +21,39 @@ export default function AccountTypeInput() {
   });
 
   return (
-    <div>
-      <TextField
-        disabled={isSubmitting}
-        fullWidth
-        label="Type"
-        variant="outlined"
-        value={accountType}
-        onClick={handleOpenTypes}
-        helperText={errors.account_type ? errors.account_type.message : ""}
-        error={Boolean(errors.account_type)}
-        slotProps={{
-          inputLabel: {
-            shrink: true,
-          },
-          input: {
-            readOnly: true,
-            endAdornment: (
-              <InputAdornment position="end">
-                <ArrowDropDownIcon />
-              </InputAdornment>
-            ),
-          },
-        }}
-        sx={{
-          "& .MuiInputBase-input": {
-            cursor: "pointer",
-          },
-        }}
-      />
-      <Backdrop
-        sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
-        open={openAccountTypes}
-        onClick={handleCloseTypes}
-      >
-        <BackDropView>
-          <div className="flex flex-col h-full">
-            <div className="flex flex-none justify-between items-center mb-lg">
-              <h1 className="text-lg font-bold">Choose account type</h1>
-              <AddNewAccountType />
-            </div>
-            <div className="grow overflow-y-auto">
-              <AccountTypeOptions onCloseTypes={handleCloseTypes} />
-            </div>
-          </div>
-        </BackDropView>
-      </Backdrop>
-    </div>
+    <TextField
+      disabled={isSubmitting}
+      fullWidth
+      label="Type"
+      variant="outlined"
+      value={accountType}
+      onClick={onOpenTypes}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+          e.preventDefault();
+          onOpenTypes();
+        }
+      }}
+      helperText={errors.account_type ? errors.account_type.message : ""}
+      error={Boolean(errors.account_type)}
+      slotProps={{
+        inputLabel: {
+          shrink: true,
+        },
+        input: {
+          readOnly: true,
+          endAdornment: (
+            <InputAdornment position="end">
+              <ArrowDropDownIcon />
+            </InputAdornment>
+          ),
+        },
+      }}
+      sx={{
+        "& .MuiInputBase-input": {
+          cursor: "pointer",
+        },
+      }}
+    />
   );
 }

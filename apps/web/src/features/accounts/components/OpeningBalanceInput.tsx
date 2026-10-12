@@ -2,7 +2,6 @@
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { FormFields } from "./NewAccountForm";
 import {
-  Backdrop,
   Button,
   TextField,
   ToggleButton,
@@ -10,8 +9,6 @@ import {
 } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { useState } from "react";
-import BackDropView from "@/src/components/ui/BackDropView";
-import CurrencyOptions from "./CurrencyOptions";
 import Image from "next/image";
 import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 
@@ -38,8 +35,12 @@ const CurrencyFlag = ({ currencyCode }: { currencyCode: string }) => {
     </div>
   );
 };
-export default function OpeningBalanceInput() {
-  const [openCurrencyOptions, setOpenCurrencyOptions] = useState(false);
+
+export default function OpeningBalanceInput({
+  onOpenCurrencies,
+}: {
+  onOpenCurrencies: () => void;
+}) {
   const {
     control,
     formState: { isSubmitting },
@@ -57,13 +58,6 @@ export default function OpeningBalanceInput() {
     control,
     name: "opening_balance",
   });
-
-  const handleCloseCurrencyOptions = () => {
-    setOpenCurrencyOptions(false);
-  };
-  const handleOpenCurrencyOptions = () => {
-    setOpenCurrencyOptions(true);
-  };
 
   const isBalanceZeroOrEmpty =
     !openingBalance || openingBalance === "" || parseFloat(openingBalance) === 0;
@@ -96,7 +90,8 @@ export default function OpeningBalanceInput() {
                   ),
                   endAdornment: (
                     <Button
-                      onClick={handleOpenCurrencyOptions}
+                      type="button"
+                      onClick={onOpenCurrencies}
                       disabled={isSubmitting}
                     >
                       <div className="p-xs flex items-center gap-xs">
@@ -147,19 +142,6 @@ export default function OpeningBalanceInput() {
           )}
         />
       </div>
-      {openCurrencyOptions && (
-        <Backdrop
-          sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
-          open={openCurrencyOptions}
-          onClick={handleCloseCurrencyOptions}
-        >
-          <BackDropView>
-            <CurrencyOptions
-              onCloseCurrencyOptions={handleCloseCurrencyOptions}
-            />
-          </BackDropView>
-        </Backdrop>
-      )}
     </div>
   );
 }

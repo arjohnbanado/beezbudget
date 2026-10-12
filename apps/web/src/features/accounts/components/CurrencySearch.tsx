@@ -1,9 +1,7 @@
 "use client";
 
-import { RadioGroup, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-import { FormFields } from "./NewAccountForm";
 import { CurrencyType } from "./CurrencyOptions";
 import FilteredCurrencyOptions from "./FilteredCurrencyOptions";
 import SearchOffOutlinedIcon from "@mui/icons-material/SearchOffOutlined";
@@ -17,8 +15,6 @@ export default function CurrencySearch({
 }) {
   const [query, setQuery] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
-
-  const { control } = useFormContext<FormFields>();
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -39,17 +35,23 @@ export default function CurrencySearch({
           .includes(debouncedQuery.toLocaleLowerCase())
       );
     });
-  }, [debouncedQuery]);
+  }, [debouncedQuery, currencies]);
 
   return (
     <div className="grow min-h-0 flex flex-col">
       <div className="mb-lg">
         <TextField
+          autoFocus
           id="search-input"
           label="Search currency..."
           value={query}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setQuery(event.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
           }}
           fullWidth
           variant="outlined"
@@ -63,30 +65,15 @@ export default function CurrencySearch({
               <>
                 <SearchOffOutlinedIcon sx={{ fontSize: 48, opacity: 0.5 }} />
                 <p className="text-sm text-center line-clamp-3 break-all px-sm">
-                  No currency found for "{query}"
+                  No currency found for &quot;{query}&quot;
                 </p>
               </>
             )}
           </div>
         ) : (
-          <Controller
-            control={control}
-            name="currency_code"
-            render={({ field }) => (
-              <RadioGroup
-                {...field}
-                aria-labelledby="currency-options"
-                name="currency-options-radio-group"
-                sx={{
-                  flexWrap: "nowrap",
-                }}
-              >
-                <FilteredCurrencyOptions
-                  currencies={filteredCurrencies}
-                  onCloseCurrencyOptions={onCloseCurrencyOptions}
-                />
-              </RadioGroup>
-            )}
+          <FilteredCurrencyOptions
+            currencies={filteredCurrencies}
+            onCloseCurrencyOptions={onCloseCurrencyOptions}
           />
         )}
       </div>

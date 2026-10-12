@@ -18,6 +18,12 @@ import { useToast } from "@/src/providers/ToastProvider";
 import { getApiErrorMessage } from "@/src/utils/errors";
 import { CloseOutlined } from "@mui/icons-material";
 import { revalidateAccountsAction } from "../actions";
+import { useState } from "react";
+import BackDropView from "@/src/components/ui/BackDropView";
+import AccountTypeOptions from "./AccountTypeOptions";
+import AddNewAccountType from "./AddNewAccountType";
+import CurrencyOptions from "./CurrencyOptions";
+import AccountIconSearch from "./AccountIconSearch";
 
 export type FormFields = z.infer<typeof schema>;
 
@@ -49,6 +55,10 @@ export default function NewAccountForm({
 }: {
   onCloseForm?: () => void;
 }) {
+  const [openTypes, setOpenTypes] = useState(false);
+  const [openCurrencies, setOpenCurrencies] = useState(false);
+  const [openIcons, setOpenIcons] = useState(false);
+
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -117,14 +127,14 @@ export default function NewAccountForm({
           <Button
             type="button"
             disabled={isSubmitting}
-            className="hidden md:block text-error"
+            className="text-error"
             onClick={onCloseForm}
           >
             <div className="flex justify-between items-center">
               <span>
                 <CloseOutlined sx={{ width: "1.25rem" }} />
               </span>
-              <span>Cancel</span>
+              <span className="hidden md:inline ml-xs">Cancel</span>
             </div>
           </Button>
           <h1 className="text-lg font-bold">Create new account</h1>
@@ -139,7 +149,7 @@ export default function NewAccountForm({
         </div>
         <div className="my-lg flex flex-col gap-lg grow overflow-y-auto py-xs">
           {/* ACCOUNT TYPE */}
-          <AccountTypeInput />
+          <AccountTypeInput onOpenTypes={() => setOpenTypes(true)} />
 
           {/* ACCOUNT NAME */}
           <Controller
@@ -189,12 +199,40 @@ export default function NewAccountForm({
             )}
           />
           {/* OPENING BALANCE */}
-          <OpeningBalanceInput />
+          <OpeningBalanceInput
+            onOpenCurrencies={() => setOpenCurrencies(true)}
+          />
 
           {/* ACCOUNT ICON */}
-          <AccountIconInput />
+          <AccountIconInput onOpenIcons={() => setOpenIcons(true)} />
         </div>
       </form>
+
+      {/* DIALOGS (siblings to <form>, inside <FormProvider>) */}
+      <BackDropView open={openTypes} onClose={() => setOpenTypes(false)}>
+        <div className="flex flex-col h-full">
+          <div className="flex flex-none justify-between items-center mb-lg">
+            <h1 className="text-lg font-bold">Choose account type</h1>
+            <AddNewAccountType />
+          </div>
+          <div className="grow overflow-y-auto">
+            <AccountTypeOptions onCloseTypes={() => setOpenTypes(false)} />
+          </div>
+        </div>
+      </BackDropView>
+
+      <BackDropView
+        open={openCurrencies}
+        onClose={() => setOpenCurrencies(false)}
+      >
+        <CurrencyOptions
+          onCloseCurrencyOptions={() => setOpenCurrencies(false)}
+        />
+      </BackDropView>
+
+      <BackDropView open={openIcons} onClose={() => setOpenIcons(false)}>
+        <AccountIconSearch onCloseIconOptions={() => setOpenIcons(false)} />
+      </BackDropView>
     </FormProvider>
   );
 }

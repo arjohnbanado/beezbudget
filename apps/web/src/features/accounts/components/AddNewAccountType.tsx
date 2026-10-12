@@ -1,6 +1,6 @@
 "use client";
 
-import { Backdrop, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import BackDropView from "@/src/components/ui/BackDropView";
@@ -74,12 +74,11 @@ export default function AddNewAccountType() {
         </div>
       </Button>
 
-      <Backdrop
-        sx={(theme) => ({ zIndex: theme.zIndex.drawer + 1 })}
+      <BackDropView
         open={openNewType}
-        onClick={handleCloseNewType}
+        onClose={handleCloseNewType}
+        isHeightContents={true}
       >
-        <BackDropView isHeightContents={true}>
           <div>
             <div className="mb-xl">
               <h1 className="text-lg font-bold text-center">
@@ -129,7 +128,6 @@ export default function AddNewAccountType() {
             </div>
           </div>
         </BackDropView>
-      </Backdrop>
     </div>
   );
 }
