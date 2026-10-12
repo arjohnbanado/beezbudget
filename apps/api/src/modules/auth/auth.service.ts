@@ -1,7 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import type { RegisterDto } from './schemas/register.schema.js';
-import { hashToken } from '../../common/utils/token.util.js';
+import {
+  generateSecureToken,
+  hashToken,
+} from '../../common/utils/token.util.js';
 import {
   comparePassword,
   hashPassword,
@@ -85,8 +88,32 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
+
+    const { sub } = payload;
+
+    const token = generateSecureToken();
+    const { rawToken, tokenHash } = token;
+
+    const refreshToken = await this.prisma.refreshToken.create({
+      data: {
+        userId: sub,
+        tokenHash,
+        familyExpiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      },
+    });
+
+    const rTCookieValidUntil = Math.min(
+      refreshToken.expiresAt.getTime(),
+      refreshToken.familyExpiresAt.getTime(),
+    );
+
+    const rTCookieMaxAge = Math.max(0, rTCookieValidUntil - Date.now());
+
     return {
       access_token: this.jwtService.sign(payload),
+      refresh_token: rawToken,
+      rTCookieMaxAge,
     };
   }
 }

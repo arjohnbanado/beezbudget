@@ -12,7 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     // 1. Define the custom cookie extractor
     const cookieExtractor = (req: Request) => {
-      return req?.cookies?.access_token || null;
+      return req.cookies['__Host-access_token'] || null;
     };
 
     super({

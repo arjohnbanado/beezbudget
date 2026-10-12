@@ -28,7 +28,7 @@ export default function AddNewAccount() {
         />
       </div>
 
-      <BackDropView open={openAccountForm} onClose={handleClose}>
+      <BackDropView open={openAccountForm}>
         <NewAccountForm onCloseForm={handleClose} />
       </BackDropView>
     </div>

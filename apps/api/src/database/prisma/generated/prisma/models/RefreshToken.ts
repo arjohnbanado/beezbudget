@@ -278,7 +278,7 @@ export type RefreshTokenScalarWhereWithAggregatesInput = {
 
 export type RefreshTokenCreateInput = {
   id?: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string
@@ -291,7 +291,7 @@ export type RefreshTokenCreateInput = {
 export type RefreshTokenUncheckedCreateInput = {
   id?: string
   userId: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string
@@ -327,7 +327,7 @@ export type RefreshTokenUncheckedUpdateInput = {
 export type RefreshTokenCreateManyInput = {
   id?: string
   userId: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string
@@ -449,7 +449,7 @@ export type RefreshTokenUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type RefreshTokenCreateWithoutUserInput = {
   id?: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string
@@ -460,7 +460,7 @@ export type RefreshTokenCreateWithoutUserInput = {
 
 export type RefreshTokenUncheckedCreateWithoutUserInput = {
   id?: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string
@@ -512,7 +512,7 @@ export type RefreshTokenScalarWhereInput = {
 
 export type RefreshTokenCreateManyUserInput = {
   id?: string
-  familyId: string
+  familyId?: string
   tokenHash: string
   createdAt?: Date | string
   expiresAt: Date | string

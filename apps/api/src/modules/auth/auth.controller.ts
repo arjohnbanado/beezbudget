@@ -89,11 +89,35 @@ export class AuthController {
   async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const loginData = await this.authService.login(req.user);
 
-    res.cookie('access_token', loginData.access_token, {
+    res.cookie('__Host-access_token', loginData.access_token, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
+      path: '/',
       maxAge: 15 * 60 * 1000,
     });
+
+    res.cookie('__Secure-refresh_token', loginData.refresh_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth',
+      maxAge: loginData.rTCookieMaxAge,
+    });
+
+    // res.cookie('access_token', loginData.access_token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'strict',
+    //   maxAge: 15 * 60 * 1000,
+    // });
+
+    // res.cookie('refresh_token', loginData.refresh_token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'strict',
+    //   path: '/api/v1/auth',
+    //   maxAge: loginData.rTCookieMaxAge,
+    // });
   }
 }

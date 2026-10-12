@@ -150,7 +150,7 @@ model ExchangeRate {
 model RefreshToken {
   id              String    @id @default(uuid()) @db.Uuid
   userId          String    @map("user_id") @db.Uuid
-  familyId        String    @map("family_id") @db.Uuid
+  familyId        String    @map("family_id") @default(uuid()) @db.Uuid
   tokenHash       String    @unique @map("token_hash") @db.Char(64)
 
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
