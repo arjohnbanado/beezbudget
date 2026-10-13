@@ -12,16 +12,39 @@ import {
 import { LoginDto } from './schemas/login.schema.js';
 import { JwtService } from '@nestjs/jwt';
 import { generateRandomUsername } from '../../common/utils/name.util.js';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  private readonly DUMMY_HASH =
-    '$2b$10$EdiWowSabawdiWowSabawiWowSabawWowSabawowS';
+  private readonly aTExpirationMS: string;
+  private readonly rTFamilyExpirationMS: string;
+  private readonly rTExpirationMS: string;
+  private readonly authDummyHash: string;
+
+  private static readonly builtInAccountTypes = [
+    'Cash',
+    'Bank',
+    'E-wallet',
+    'Card',
+  ];
 
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.aTExpirationMS = this.configService.getOrThrow<string>(
+      'ACCESS_TOKEN_EXPIRATION_MS',
+    );
+    this.rTFamilyExpirationMS = this.configService.getOrThrow<string>(
+      'REFRESH_TOKEN_FAMILY_EXPIRATION_MS',
+    );
+    this.rTExpirationMS = this.configService.getOrThrow<string>(
+      'REFRESH_TOKEN_EXPIRATION_MS',
+    );
+    this.authDummyHash =
+      this.configService.getOrThrow<string>('AUTH_DUMMY_HASH');
+  }
 
   async register(registerDto: RegisterDto) {
     const { password, rawToken } = registerDto;
@@ -55,9 +78,7 @@ export class AuthService {
       }),
     ]);
 
-    const builtInAccountTypes = ['Cash', 'Bank', 'E-wallet', 'Card'];
-
-    builtInAccountTypes.forEach(async (builtInAccountType) => {
+    AuthService.builtInAccountTypes.forEach(async (builtInAccountType) => {
       await this.prisma.accountType.create({
         data: { name: builtInAccountType, userId: user[0].id },
       });
@@ -72,7 +93,7 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
     if (!user || !user.password) {
-      await comparePassword(password, this.DUMMY_HASH);
+      await comparePassword(password, this.authDummyHash);
 
       throw new UnauthorizedException('Invalid email or password');
     }
@@ -98,8 +119,10 @@ export class AuthService {
       data: {
         userId: sub,
         tokenHash,
-        familyExpiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        familyExpiresAt: new Date(
+          Date.now() + parseInt(this.rTFamilyExpirationMS, 10),
+        ),
+        expiresAt: new Date(Date.now() + parseInt(this.rTExpirationMS, 10)),
       },
     });
 
@@ -107,13 +130,18 @@ export class AuthService {
       refreshToken.expiresAt.getTime(),
       refreshToken.familyExpiresAt.getTime(),
     );
+    const aTCookieValidUntil = new Date(
+      Date.now() + parseInt(this.aTExpirationMS, 10),
+    ).getTime();
 
+    const aTCookieMaxAge = Math.max(0, aTCookieValidUntil - Date.now());
     const rTCookieMaxAge = Math.max(0, rTCookieValidUntil - Date.now());
 
     return {
       access_token: this.jwtService.sign(payload),
       refresh_token: rawToken,
       rTCookieMaxAge,
+      aTCookieMaxAge,
     };
   }
 }

@@ -13,16 +13,25 @@ import type {
   FindOneForgotPasswordFilterDto,
 } from './schemas/findOne-forgot-password.schema.js';
 import type { ResetPasswordDto } from './schemas/reset-password.schema.js';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ForgotPasswordService {
-  private readonly resetTokenExpirationMS = 15 * 60 * 1000;
-  private readonly resendTokenAvailableMS = 1 * 60 * 1000;
+  private readonly resetTokenExpirationMS: string;
+  private readonly resetTokenResendAvailableMS: string;
 
   constructor(
     private emailService: EmailService,
     private prisma: PrismaService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.resetTokenExpirationMS = this.configService.getOrThrow<string>(
+      'RESET_TOKEN_EXPIRATION_MS',
+    );
+    this.resetTokenResendAvailableMS = this.configService.getOrThrow<string>(
+      'RESET_TOKEN_RESEND_AVAILABLE_MS',
+    );
+  }
 
   async createForgotPassword({ email }: CreateForgotPasswordDto) {
     const user = await this.prisma.user.findUnique({ where: { email } });
@@ -32,9 +41,11 @@ export class ForgotPasswordService {
     }
 
     const { rawToken, tokenHash } = generateSecureToken();
-    const expiresAt = new Date(Date.now() + this.resetTokenExpirationMS);
+    const expiresAt = new Date(
+      Date.now() + parseInt(this.resetTokenExpirationMS, 10),
+    );
     const resendAvailableAt = new Date(
-      Date.now() + this.resendTokenAvailableMS,
+      Date.now() + parseInt(this.resetTokenResendAvailableMS, 10),
     );
 
     const token = await this.prisma.verificationToken.create({
@@ -101,9 +112,11 @@ export class ForgotPasswordService {
     }
 
     const { rawToken, tokenHash } = generateSecureToken();
-    const expiresAt = new Date(Date.now() + this.resetTokenExpirationMS);
+    const expiresAt = new Date(
+      Date.now() + parseInt(this.resetTokenExpirationMS, 10),
+    );
     const resendAvailableAt = new Date(
-      Date.now() + this.resendTokenAvailableMS,
+      Date.now() + parseInt(this.resetTokenResendAvailableMS),
     );
 
     const results = await this.prisma.$transaction([

@@ -11,16 +11,26 @@ import {
   FindOneVerificationFilterDto,
 } from './schemas/findOne-verification.schema.js';
 import { CreateVerificationDto } from './schemas/create-verification.schema.js';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class VerificationsService {
-  private readonly verificationTokenExpirationMS = 15 * 60 * 1000;
-  private readonly resendTokenAvailableMS = 1 * 60 * 1000;
+  private readonly verificationTokenExpirationMS: string;
+  private readonly verificationTokenResendAvailableMS: string;
 
   constructor(
     private emailService: EmailService,
     private prisma: PrismaService,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.verificationTokenExpirationMS = this.configService.getOrThrow<string>(
+      'VERIFICATION_TOKEN_EXPIRATION_MS',
+    );
+    this.verificationTokenResendAvailableMS =
+      this.configService.getOrThrow<string>(
+        'VERIFICATION_TOKEN_RESEND_AVAILABLE_MS',
+      );
+  }
 
   async createVerification(createVerificationDto: CreateVerificationDto) {
     const { email } = createVerificationDto;
@@ -35,10 +45,12 @@ export class VerificationsService {
 
     const { rawToken, tokenHash } = generateSecureToken();
 
-    const expiresAt = new Date(Date.now() + this.verificationTokenExpirationMS);
+    const expiresAt = new Date(
+      Date.now() + parseInt(this.verificationTokenExpirationMS, 10),
+    );
 
     const resendAvailableAt = new Date(
-      Date.now() + this.resendTokenAvailableMS,
+      Date.now() + parseInt(this.verificationTokenResendAvailableMS, 10),
     );
 
     const token = await this.prisma.verificationToken.create({
@@ -109,10 +121,12 @@ export class VerificationsService {
 
     const { rawToken, tokenHash } = generateSecureToken();
 
-    const expiresAt = new Date(Date.now() + this.verificationTokenExpirationMS);
+    const expiresAt = new Date(
+      Date.now() + parseInt(this.verificationTokenExpirationMS, 10),
+    );
 
     const resendAvailableAt = new Date(
-      Date.now() + this.resendTokenAvailableMS,
+      Date.now() + parseInt(this.verificationTokenResendAvailableMS, 10),
     );
 
     const results = await this.prisma.$transaction([

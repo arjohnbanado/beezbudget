@@ -15,12 +15,15 @@ export class EmailService {
   private readonly frontendUrl: string;
   private readonly template: string;
   private readonly passwordResetTemplate: string;
+  private readonly resendKey: string | undefined;
 
   constructor(private configService: ConfigService) {
-    const resendKey = this.configService.get<string>('RESEND_API_KEY');
+    this.resendKey = this.configService.get<string | undefined>(
+      'RESEND_API_KEY',
+    );
     this.frontendUrl = this.configService.getOrThrow<string>('FRONTEND_URL');
 
-    this.resend = new Resend(resendKey);
+    this.resend = new Resend(this.resendKey);
 
     const templatePath = join(
       process.cwd(),

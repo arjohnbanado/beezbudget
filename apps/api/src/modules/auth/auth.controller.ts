@@ -94,7 +94,7 @@ export class AuthController {
       secure: true,
       sameSite: 'strict',
       path: '/',
-      maxAge: 15 * 60 * 1000,
+      maxAge: loginData.aTCookieMaxAge,
     });
 
     res.cookie('__Secure-refresh_token', loginData.refresh_token, {
@@ -104,20 +104,5 @@ export class AuthController {
       path: '/api/v1/auth',
       maxAge: loginData.rTCookieMaxAge,
     });
-
-    // res.cookie('access_token', loginData.access_token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'strict',
-    //   maxAge: 15 * 60 * 1000,
-    // });
-
-    // res.cookie('refresh_token', loginData.refresh_token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'strict',
-    //   path: '/api/v1/auth',
-    //   maxAge: loginData.rTCookieMaxAge,
-    // });
   }
 }

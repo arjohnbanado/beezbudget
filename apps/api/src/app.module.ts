@@ -23,6 +23,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
         appKey: configService.getOrThrow<string>('OBSERVE_APP_KEY'),
         appSecret: configService.getOrThrow<string>('OBSERVE_APP_SECRET'),
         serviceId: 'beezbudget',
+        debug: configService.get<string>('OBSERVE_DEBUG') === 'true',
       }),
     }),
     ConfigModule.forRoot({

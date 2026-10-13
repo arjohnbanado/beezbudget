@@ -12,7 +12,6 @@ import {
   encryptSensitiveField,
   parseSensitiveFieldEncryptionKey,
 } from '../../common/utils/field-encryption.util.js';
-import { symbol } from 'zod';
 
 @Injectable()
 export class AccountsService {
