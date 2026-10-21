@@ -7,7 +7,7 @@ import BackDropView from "@/src/components/ui/BackDropView";
 import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { apiClient } from "@/src/lib/api-client";
 import { getApiErrorMessage } from "@/src/utils/errors";
 import PrimaryButton from "@/src/components/shared/PrimaryButton";
 import { useToast } from "@/src/providers/ToastProvider";
@@ -48,7 +48,7 @@ export default function AddNewAccountType() {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await axios.post("/api/v1/accounts/types", data);
+      await apiClient.post("/api/v1/accounts/types", data);
       mutate("/api/v1/accounts/types");
       showToast({
         message: "Account type saved successfully.",

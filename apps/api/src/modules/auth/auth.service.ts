@@ -126,6 +126,14 @@ export class AuthService {
       },
     });
 
+    // Example in auth.service.ts: 15 minutes + random 0–60 seconds of jitter
+    const jitterMs = Math.floor(Math.random() * 60_000);
+    const aTExpirationWithJitterMs =
+      parseInt(this.aTExpirationMS, 10) + jitterMs;
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: Math.floor(aTExpirationWithJitterMs / 1000), // in seconds
+    });
+
     const rTCookieValidUntil = Math.min(
       refreshToken.expiresAt.getTime(),
       refreshToken.familyExpiresAt.getTime(),
@@ -138,10 +146,130 @@ export class AuthService {
     const rTCookieMaxAge = Math.max(0, rTCookieValidUntil - Date.now());
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: accessToken,
       refresh_token: rawToken,
       rTCookieMaxAge,
       aTCookieMaxAge,
     };
+  }
+
+  async refresh(rawRefreshToken?: string) {
+    if (!rawRefreshToken) {
+      throw new UnauthorizedException('Refresh token is missing.');
+    }
+
+    const tokenHash = hashToken(rawRefreshToken);
+
+    const storedToken = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+      include: { user: true },
+    });
+
+    if (!storedToken) {
+      throw new UnauthorizedException('Invalid refresh token.');
+    }
+
+    const now = new Date();
+
+    // 1. Reuse detection: if this token was already consumed, revoke the entire family
+    if (storedToken.consumedAt !== null) {
+      await this.prisma.refreshToken.updateMany({
+        where: {
+          familyId: storedToken.familyId,
+          revokedAt: null,
+        },
+        data: { revokedAt: now },
+      });
+
+      throw new UnauthorizedException('Invalid refresh token.');
+    }
+
+    // 2. Check if revoked or expired (7-day sliding or 30-day family hard cap)
+    if (
+      storedToken.revokedAt !== null ||
+      storedToken.expiresAt <= now ||
+      storedToken.familyExpiresAt <= now
+    ) {
+      throw new UnauthorizedException('Refresh token expired or revoked.');
+    }
+
+    // 3. Rotate refresh token atomically within the same family
+    const { rawToken: newRawToken, tokenHash: newTokenHash } =
+      generateSecureToken();
+
+    const slidingExpiresAt = new Date(
+      now.getTime() + parseInt(this.rTExpirationMS, 10),
+    );
+    const nextExpiresAt =
+      slidingExpiresAt < storedToken.familyExpiresAt
+        ? slidingExpiresAt
+        : storedToken.familyExpiresAt;
+
+    const [, newRefreshToken] = await this.prisma.$transaction([
+      this.prisma.refreshToken.update({
+        where: { id: storedToken.id },
+        data: { consumedAt: now },
+      }),
+      this.prisma.refreshToken.create({
+        data: {
+          userId: storedToken.userId,
+          familyId: storedToken.familyId,
+          tokenHash: newTokenHash,
+          familyExpiresAt: storedToken.familyExpiresAt,
+          expiresAt: nextExpiresAt,
+        },
+      }),
+    ]);
+
+    // 4. Sign new access token with 0-60s jitter
+    const payload = {
+      username: storedToken.user.name,
+      sub: storedToken.user.id,
+    };
+    const jitterMs = Math.floor(Math.random() * 60_000);
+    const aTExpirationWithJitterMs =
+      parseInt(this.aTExpirationMS, 10) + jitterMs;
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: Math.floor(aTExpirationWithJitterMs / 1000),
+    });
+
+    const rTCookieMaxAge = Math.max(
+      0,
+      newRefreshToken.expiresAt.getTime() - Date.now(),
+    );
+
+    return {
+      access_token: accessToken,
+      refresh_token: newRawToken,
+      rTCookieMaxAge,
+    };
+  }
+
+  async logout(rawRefreshToken?: string): Promise<void> {
+    if (!rawRefreshToken) {
+      return;
+    }
+
+    const tokenHash = hashToken(rawRefreshToken);
+
+    const storedToken = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+      select: { familyId: true },
+    });
+
+    if (!storedToken) {
+      return;
+    }
+
+    await this.prisma.refreshToken.updateMany({
+      where: {
+        familyId: storedToken.familyId,
+        revokedAt: null,
+      },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
   }
 }

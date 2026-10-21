@@ -7,6 +7,7 @@ import BrokenImageOutlinedIcon from "@mui/icons-material/BrokenImageOutlined";
 import { formatMoney } from "@/src/utils/formatters";
 import { Button } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Link from "next/link";
 
 export default function AccountListItem({ account }: { account: Account }) {
   const accountItemIcon = getAccountIconByKey(account.icon_key);
@@ -14,11 +15,13 @@ export default function AccountListItem({ account }: { account: Account }) {
     account.opening_balance,
     account.currency_symbol,
   );
+
   return (
     <div className="flex items-center border-b border-canvas">
       <div className="grow">
         <Button
-          type="button"
+          component={Link}
+          href={`/accounts/${account.id}`}
           variant="text"
           className="text-left"
           color="inherit"

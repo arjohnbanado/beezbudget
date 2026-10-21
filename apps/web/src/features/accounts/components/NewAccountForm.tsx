@@ -13,11 +13,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import OpeningBalanceInput from "./OpeningBalanceInput";
 import AccountIconInput from "./AccountIconInput";
-import axios from "axios";
+import { apiClient } from "@/src/lib/api-client";
 import { useToast } from "@/src/providers/ToastProvider";
 import { getApiErrorMessage } from "@/src/utils/errors";
 import { CloseOutlined } from "@mui/icons-material";
-import { revalidateAccountsAction } from "../actions";
+import { useSWRConfig } from "swr";
 import { useState } from "react";
 import BackDropView from "@/src/components/ui/BackDropView";
 import AccountTypeOptions from "./AccountTypeOptions";
@@ -72,6 +72,7 @@ export default function NewAccountForm({
     },
   });
   const { showToast } = useToast();
+  const { mutate } = useSWRConfig();
   const {
     control,
     handleSubmit,
@@ -98,11 +99,9 @@ export default function NewAccountForm({
         icon_key: data.icon_key,
       };
 
-      await axios.post("/api/v1/accounts", payload, {
-        withCredentials: true,
-      });
+      await apiClient.post("/api/v1/accounts", payload);
 
-      await revalidateAccountsAction();
+      mutate("/api/v1/accounts");
 
       if (onCloseForm) {
         showToast({

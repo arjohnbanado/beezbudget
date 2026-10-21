@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import useSWR from "swr";
 import { FormFields } from "./NewAccountForm";
 import { List, ListItemButton, Radio } from "@mui/material";
-import axios from "axios";
+import { apiClient } from "@/src/lib/api-client";
 import CircularProgress from "@mui/material/CircularProgress";
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
 import { customAlphabeticalSort } from "@/src/utils/sorting";
@@ -14,8 +14,8 @@ interface AccountType {
 }
 
 const fetcher = (url: string) =>
-  axios
-    .get<AccountType[]>(url, { withCredentials: true, timeout: 10000 })
+  apiClient
+    .get<AccountType[]>(url, { timeout: 10000 })
     .then((res) => res.data);
 
 export default function AccountTypeOptions({

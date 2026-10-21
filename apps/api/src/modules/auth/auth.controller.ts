@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Cookies,
   HttpCode,
   HttpStatus,
   Post,
@@ -94,7 +95,7 @@ export class AuthController {
       secure: true,
       sameSite: 'strict',
       path: '/',
-      maxAge: loginData.aTCookieMaxAge,
+      maxAge: loginData.rTCookieMaxAge,
     });
 
     res.cookie('__Secure-refresh_token', loginData.refresh_token, {
@@ -103,6 +104,88 @@ export class AuthController {
       sameSite: 'strict',
       path: '/api/v1/auth',
       maxAge: loginData.rTCookieMaxAge,
+    });
+  }
+
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Tokens refreshed successfully and new cookies were set.',
+    headers: {
+      'Set-Cookie': {
+        description:
+          'HttpOnly, Secure, SameSite=Strict access_token and refresh_token cookies.',
+        schema: { type: 'string' },
+      },
+    },
+  })
+  @ApiProblemResponses(401, 500)
+  async refresh(
+    @Cookies('__Secure-refresh_token') refreshToken: string | undefined,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    try {
+      const refreshData = await this.authService.refresh(refreshToken);
+
+      res.cookie('__Host-access_token', refreshData.access_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+        maxAge: refreshData.rTCookieMaxAge,
+      });
+
+      res.cookie('__Secure-refresh_token', refreshData.refresh_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/api/v1/auth',
+        maxAge: refreshData.rTCookieMaxAge,
+      });
+    } catch (error) {
+      res.clearCookie('__Host-access_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+      });
+
+      res.clearCookie('__Secure-refresh_token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/api/v1/auth',
+      });
+
+      throw error;
+    }
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description:
+      'Logged out successfully and authentication cookies were cleared.',
+  })
+  @ApiProblemResponses(500)
+  async logout(
+    @Cookies('__Secure-refresh_token') refreshToken: string | undefined,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    await this.authService.logout(refreshToken);
+
+    res.clearCookie('__Host-access_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/',
+    });
+
+    res.clearCookie('__Secure-refresh_token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/api/v1/auth',
     });
   }
 }

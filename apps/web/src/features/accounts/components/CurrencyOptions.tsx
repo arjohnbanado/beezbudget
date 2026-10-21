@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularProgress } from "@mui/material";
-import axios from "axios";
+import { apiClient } from "@/src/lib/api-client";
 import useSWRImmutable from "swr/immutable";
 import SecondaryButton from "@/src/components/shared/SecondaryButton";
 import CurrencySearch from "./CurrencySearch";
@@ -13,8 +13,8 @@ export interface CurrencyType {
 }
 
 const fetcher = (url: string) =>
-  axios
-    .get<CurrencyType[]>(url, { withCredentials: true, timeout: 10000 })
+  apiClient
+    .get<CurrencyType[]>(url, { timeout: 10000 })
     .then((res) => res.data);
 
 export default function CurrencyOptions({

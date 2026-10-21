@@ -1,6 +1,7 @@
 "use client";
 
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import {
   Box,
   List,
@@ -12,9 +13,20 @@ import {
 import { drawerItems } from "./ProtectedSidebarMobile";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { apiClient, clearLastRefreshedAt } from "@/src/lib/api-client";
 
 export default function ProtectedSidebarDesktop() {
   const pathname = usePathname();
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post("/api/v1/auth/logout");
+    } finally {
+      clearLastRefreshedAt();
+      window.location.href = "/signin";
+    }
+  };
+
   return (
     <div className="hidden lg:block w-48 overflow-y-auto">
       <Box role="presentation">
@@ -51,6 +63,21 @@ export default function ProtectedSidebarDesktop() {
               </ListItem>
             );
           })}
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutOutlinedIcon className="text-error" />
+              </ListItemIcon>
+              <ListItemText
+                primary="Log out"
+                slotProps={{
+                  primary: {
+                    className: "text-error",
+                  },
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
       {/* <div>

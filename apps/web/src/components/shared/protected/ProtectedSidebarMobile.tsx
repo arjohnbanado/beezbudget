@@ -13,12 +13,14 @@ import {
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import type { SvgIconComponent } from "@mui/icons-material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { useState } from "react";
 import BeezLogo, { BeezLogoSize } from "../BeezLogo";
+import { apiClient, clearLastRefreshedAt } from "@/src/lib/api-client";
 
 export const drawerItems: {
   id: string;
@@ -46,6 +48,15 @@ export default function ProtectedSidebarMobile() {
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpenSidebar(newOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post("/api/v1/auth/logout");
+    } finally {
+      clearLastRefreshedAt();
+      window.location.href = "/signin";
+    }
   };
 
   const DrawerList = (
@@ -86,6 +97,21 @@ export default function ProtectedSidebarMobile() {
             </ListItem>
           );
         })}
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutOutlinedIcon className="text-error" />
+            </ListItemIcon>
+            <ListItemText
+              primary="Log out"
+              slotProps={{
+                primary: {
+                  className: "text-error",
+                },
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
