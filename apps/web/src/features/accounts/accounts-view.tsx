@@ -6,6 +6,7 @@ import Image from "next/image";
 import bbaccountbanner from "@/public/images/illustrations/beez-with-coin-and-piggy-bank.svg";
 import AccountsListActions from "./components/AccountsListActions";
 import AccountsList from "./components/AccountsList";
+import TotalAccountBalance from "./components/TotalAccountBalance";
 import FeatureView from "@/src/components/ui/FeatureView";
 
 export default function AccountsView() {
@@ -84,9 +85,7 @@ export default function AccountsView() {
               <span className="text-xs md:text-sm lg:text-base">
                 Total Account Balance
               </span>
-              <h2 className="text-xl text-shadow-lg md:text-2xl lg:text-3xl">
-                $500.00
-              </h2>
+              <TotalAccountBalance />
             </div>
           </div>
         </div>

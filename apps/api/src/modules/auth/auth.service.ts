@@ -104,11 +104,20 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    return { username: user.name, userId: user.id };
+    return {
+      username: user.name,
+      userId: user.id,
+      isOnboarded: Boolean(user.onboardedAt),
+    };
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const isOnboarded = Boolean(user.isOnboarded);
+    const payload = {
+      username: user.username,
+      sub: user.userId,
+      isOnboarded,
+    };
 
     const { sub } = payload;
 
@@ -150,6 +159,34 @@ export class AuthService {
       refresh_token: rawToken,
       rTCookieMaxAge,
       aTCookieMaxAge,
+      isOnboarded,
+    };
+  }
+
+  issueAccessTokenForUser(user: {
+    id: string;
+    name: string;
+    onboardedAt: Date | null;
+  }) {
+    const payload = {
+      username: user.name,
+      sub: user.id,
+      isOnboarded: Boolean(user.onboardedAt),
+    };
+
+    const jitterMs = Math.floor(Math.random() * 60_000);
+    const aTExpirationWithJitterMs =
+      parseInt(this.aTExpirationMS, 10) + jitterMs;
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: Math.floor(aTExpirationWithJitterMs / 1000),
+    });
+
+    const rTCookieMaxAge = parseInt(this.rTExpirationMS, 10);
+
+    return {
+      access_token: accessToken,
+      rTCookieMaxAge,
     };
   }
 
@@ -225,6 +262,7 @@ export class AuthService {
     const payload = {
       username: storedToken.user.name,
       sub: storedToken.user.id,
+      isOnboarded: Boolean(storedToken.user.onboardedAt),
     };
     const jitterMs = Math.floor(Math.random() * 60_000);
     const aTExpirationWithJitterMs =

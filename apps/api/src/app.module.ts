@@ -11,6 +11,7 @@ import { PrismaModule } from './database/prisma/prisma.module.js';
 import { UsersModule } from './modules/users/users.module.js';
 import { AccountsModule } from './modules/accounts/accounts.module.js';
 import { CurrenciesModule } from './modules/currencies/currencies.module.js';
+import { JobsModule } from './jobs/jobs.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -35,6 +36,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     UsersModule,
     AccountsModule,
     CurrenciesModule,
+    JobsModule,
   ],
   controllers: [AppController],
 

@@ -545,10 +545,6 @@ export type EnumTokenTypeFieldUpdateOperationsInput = {
   set?: $Enums.TokenType
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type VerificationTokenCreateWithoutUserInput = {
   id?: string
   email: string

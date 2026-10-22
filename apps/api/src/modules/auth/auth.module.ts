@@ -45,6 +45,6 @@ import { ForgotPasswordController } from './forgot-password/forgot-password.cont
     VerificationsController,
     ForgotPasswordController,
   ],
-  exports: [PassportModule],
+  exports: [PassportModule, AuthService],
 })
 export class AuthModule {}

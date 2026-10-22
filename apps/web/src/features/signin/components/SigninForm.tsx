@@ -15,6 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LoginResponse } from "@/src/types/auth.types";
 
 type FormFields = z.infer<typeof schema>;
 
@@ -45,9 +46,12 @@ export default function SigninForm() {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await axios.post("/api/v1/auth/login", data);
+      const response = await axios.post<LoginResponse>(
+        "/api/v1/auth/login",
+        data,
+      );
 
-      router.push(`/dashboard`);
+      router.push(response.data?.isOnboarded ? "/dashboard" : "/onboarding");
     } catch (error) {
       setError("root.serverError", {
         type: "server",

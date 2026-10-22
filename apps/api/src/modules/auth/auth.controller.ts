@@ -105,6 +105,8 @@ export class AuthController {
       path: '/api/v1/auth',
       maxAge: loginData.rTCookieMaxAge,
     });
+
+    return { isOnboarded: loginData.isOnboarded };
   }
 
   @Post('refresh')

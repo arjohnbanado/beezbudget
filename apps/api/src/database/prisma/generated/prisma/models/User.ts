@@ -33,6 +33,7 @@ export type UserMinAggregateOutputType = {
   googleId: string | null
   status: $Enums.UserStatus | null
   preferredCurrencyCode: string | null
+  onboardedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type UserMaxAggregateOutputType = {
   googleId: string | null
   status: $Enums.UserStatus | null
   preferredCurrencyCode: string | null
+  onboardedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +61,7 @@ export type UserCountAggregateOutputType = {
   googleId: number
   status: number
   preferredCurrencyCode: number
+  onboardedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,6 +77,7 @@ export type UserMinAggregateInputType = {
   googleId?: true
   status?: true
   preferredCurrencyCode?: true
+  onboardedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +91,7 @@ export type UserMaxAggregateInputType = {
   googleId?: true
   status?: true
   preferredCurrencyCode?: true
+  onboardedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +105,7 @@ export type UserCountAggregateInputType = {
   googleId?: true
   status?: true
   preferredCurrencyCode?: true
+  onboardedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -186,6 +192,7 @@ export type UserGroupByOutputType = {
   googleId: string | null
   status: $Enums.UserStatus
   preferredCurrencyCode: string | null
+  onboardedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -220,6 +227,7 @@ export type UserWhereInput = {
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
+  onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   preferredCurrency?: Prisma.XOR<Prisma.CurrencyNullableScalarRelationFilter, Prisma.CurrencyWhereInput> | null
@@ -238,6 +246,7 @@ export type UserOrderByWithRelationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   preferredCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   preferredCurrency?: Prisma.CurrencyOrderByWithRelationInput
@@ -259,6 +268,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
+  onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   preferredCurrency?: Prisma.XOR<Prisma.CurrencyNullableScalarRelationFilter, Prisma.CurrencyWhereInput> | null
@@ -277,6 +287,7 @@ export type UserOrderByWithAggregationInput = {
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   preferredCurrencyCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -296,6 +307,7 @@ export type UserScalarWhereWithAggregatesInput = {
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  onboardedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -308,6 +320,7 @@ export type UserCreateInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
@@ -326,6 +339,7 @@ export type UserUncheckedCreateInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -342,6 +356,7 @@ export type UserUpdateInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
@@ -360,6 +375,7 @@ export type UserUncheckedUpdateInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -377,6 +393,7 @@ export type UserCreateManyInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -389,6 +406,7 @@ export type UserUpdateManyMutationInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -402,6 +420,7 @@ export type UserUncheckedUpdateManyInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -425,6 +444,7 @@ export type UserCountOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   preferredCurrencyCode?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -438,6 +458,7 @@ export type UserMaxOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   preferredCurrencyCode?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -451,6 +472,7 @@ export type UserMinOrderByAggregateInput = {
   googleId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   preferredCurrencyCode?: Prisma.SortOrder
+  onboardedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -509,6 +531,10 @@ export type UserUncheckedUpdateManyWithoutPreferredCurrencyNestedInput = {
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
   set?: $Enums.UserStatus
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -581,6 +607,7 @@ export type UserCreateWithoutPreferredCurrencyInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
@@ -597,6 +624,7 @@ export type UserUncheckedCreateWithoutPreferredCurrencyInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -643,6 +671,7 @@ export type UserScalarWhereInput = {
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.StringNullableFilter<"User"> | string | null
+  onboardedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
 }
@@ -655,6 +684,7 @@ export type UserCreateWithoutVerificationTokensInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
@@ -672,6 +702,7 @@ export type UserUncheckedCreateWithoutVerificationTokensInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accountTypes?: Prisma.AccountTypeUncheckedCreateNestedManyWithoutUserInput
@@ -703,6 +734,7 @@ export type UserUpdateWithoutVerificationTokensInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
@@ -720,6 +752,7 @@ export type UserUncheckedUpdateWithoutVerificationTokensInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accountTypes?: Prisma.AccountTypeUncheckedUpdateManyWithoutUserNestedInput
@@ -735,6 +768,7 @@ export type UserCreateWithoutAccountTypesInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
@@ -752,6 +786,7 @@ export type UserUncheckedCreateWithoutAccountTypesInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -783,6 +818,7 @@ export type UserUpdateWithoutAccountTypesInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
@@ -800,6 +836,7 @@ export type UserUncheckedUpdateWithoutAccountTypesInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -815,6 +852,7 @@ export type UserCreateWithoutAccountsInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
@@ -832,6 +870,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -863,6 +902,7 @@ export type UserUpdateWithoutAccountsInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
@@ -880,6 +920,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -895,6 +936,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   preferredCurrency?: Prisma.CurrencyCreateNestedOneWithoutPreferredByUsersInput
@@ -912,6 +954,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   googleId?: string | null
   status?: $Enums.UserStatus
   preferredCurrencyCode?: string | null
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
@@ -943,6 +986,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   preferredCurrency?: Prisma.CurrencyUpdateOneWithoutPreferredByUsersNestedInput
@@ -960,6 +1004,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   preferredCurrencyCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -975,6 +1020,7 @@ export type UserCreateManyPreferredCurrencyInput = {
   facebookId?: string | null
   googleId?: string | null
   status?: $Enums.UserStatus
+  onboardedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -987,6 +1033,7 @@ export type UserUpdateWithoutPreferredCurrencyInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
@@ -1003,6 +1050,7 @@ export type UserUncheckedUpdateWithoutPreferredCurrencyInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1019,6 +1067,7 @@ export type UserUncheckedUpdateManyWithoutPreferredCurrencyInput = {
   facebookId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  onboardedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1090,6 +1139,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   googleId?: boolean
   status?: boolean
   preferredCurrencyCode?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
@@ -1109,6 +1159,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   googleId?: boolean
   status?: boolean
   preferredCurrencyCode?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
@@ -1123,6 +1174,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   googleId?: boolean
   status?: boolean
   preferredCurrencyCode?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
@@ -1137,11 +1189,12 @@ export type UserSelectScalar = {
   googleId?: boolean
   status?: boolean
   preferredCurrencyCode?: boolean
+  onboardedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "facebookId" | "googleId" | "status" | "preferredCurrencyCode" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "facebookId" | "googleId" | "status" | "preferredCurrencyCode" | "onboardedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   preferredCurrency?: boolean | Prisma.User$preferredCurrencyArgs<ExtArgs>
   verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
@@ -1178,6 +1231,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     googleId: string | null
     status: $Enums.UserStatus
     preferredCurrencyCode: string | null
+    onboardedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1616,6 +1670,7 @@ export interface UserFieldRefs {
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly preferredCurrencyCode: Prisma.FieldRef<"User", 'String'>
+  readonly onboardedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

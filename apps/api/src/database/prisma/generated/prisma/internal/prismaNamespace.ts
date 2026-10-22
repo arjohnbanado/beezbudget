@@ -1000,6 +1000,7 @@ export const UserScalarFieldEnum = {
   googleId: 'googleId',
   status: 'status',
   preferredCurrencyCode: 'preferredCurrencyCode',
+  onboardedAt: 'onboardedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

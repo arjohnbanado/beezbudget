@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,6 +13,8 @@ import {
   encryptSensitiveField,
   parseSensitiveFieldEncryptionKey,
 } from '../../common/utils/field-encryption.util.js';
+
+const PIVOT_BASE_CURRENCY = 'EUR';
 
 @Injectable()
 export class AccountsService {
@@ -40,32 +43,130 @@ export class AccountsService {
   }
 
   async findAccounts(user: any) {
-    const accounts = await this.prisma.account.findMany({
-      where: {
-        userId: user.userId,
-      },
-      include: {
-        accountType: true,
-        currency: true,
-      },
-      orderBy: { createdAt: 'desc' },
+    const [userRecord, accounts] = await Promise.all([
+      this.prisma.user.findUnique({
+        where: { id: user.userId },
+        select: {
+          preferredCurrencyCode: true,
+          preferredCurrency: {
+            select: {
+              code: true,
+              symbol: true,
+            },
+          },
+        },
+      }),
+      this.prisma.account.findMany({
+        where: {
+          userId: user.userId,
+        },
+        include: {
+          accountType: true,
+          currency: true,
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+
+    if (!userRecord?.preferredCurrencyCode || !userRecord.preferredCurrency) {
+      throw new ForbiddenException('Please complete onboarding first.');
+    }
+
+    const targetCurrencyCode = userRecord.preferredCurrencyCode;
+    const targetCurrencySymbol = userRecord.preferredCurrency.symbol ?? null;
+
+    const foreignCurrencyCodes = [
+      ...new Set(
+        accounts
+          .filter((account) => account.openingBalance !== null)
+          .map((account) => account.currencyCode)
+          .filter((code) => code !== targetCurrencyCode),
+      ),
+    ];
+
+    // Map of quoteCurrencyCode -> rate relative to EUR (1 EUR = X quoteCurrency)
+    const eurRateMap = new Map<string, number>([[PIVOT_BASE_CURRENCY, 1]]);
+
+    if (foreignCurrencyCodes.length > 0) {
+      const quotesToLookup = [
+        ...new Set([...foreignCurrencyCodes, targetCurrencyCode]),
+      ].filter((code) => code !== PIVOT_BASE_CURRENCY);
+
+      const eurRates = await this.prisma.exchangeRate.findMany({
+        where: {
+          baseCurrencyCode: PIVOT_BASE_CURRENCY,
+          quoteCurrencyCode: { in: quotesToLookup },
+        },
+        orderBy: { rateDate: 'desc' },
+        distinct: ['quoteCurrencyCode'],
+      });
+
+      for (const rateRecord of eurRates) {
+        const numericRate = Number(rateRecord.rate);
+        if (numericRate > 0) {
+          eurRateMap.set(rateRecord.quoteCurrencyCode, numericRate);
+        }
+      }
+    }
+
+    const targetEurRate = eurRateMap.get(targetCurrencyCode);
+    let totalBalance = 0;
+
+    const mappedAccounts = accounts.map((account) => {
+      const openingBalance =
+        account.openingBalance !== null ? Number(account.openingBalance) : null;
+
+      let convertedOpeningBalance: number | null = null;
+
+      if (openingBalance !== null) {
+        if (account.currencyCode === targetCurrencyCode) {
+          if (account.status === 'active') {
+            totalBalance += openingBalance;
+          }
+        } else {
+          const accountEurRate = eurRateMap.get(account.currencyCode);
+          // Cross-rate triangulation via EUR:
+          // amountInTarget = amountInAccount * (EUR->Target / EUR->Account)
+          const conversionRate =
+            accountEurRate && targetEurRate
+              ? targetEurRate / accountEurRate
+              : 1;
+
+          const converted = openingBalance * conversionRate;
+          convertedOpeningBalance = Number(converted.toFixed(2));
+
+          if (account.status === 'active') {
+            totalBalance += converted;
+          }
+        }
+      }
+
+      return {
+        id: account.id,
+        name: account.name,
+        account_type: account.accountType.name,
+        account_number_last4: account.accountNumberLast4,
+        opening_balance: openingBalance,
+        converted_opening_balance: convertedOpeningBalance,
+        currency_code: account.currencyCode,
+        icon_key: account.iconKey,
+        status: account.status,
+        created_at: account.createdAt,
+        updated_at: account.updatedAt,
+        currency_symbol: account.currency.symbol
+          ? account.currency.symbol
+          : null,
+      };
     });
 
-    return accounts.map((account) => ({
-      id: account.id,
-      name: account.name,
-      account_type: account.accountType.name,
-      account_number_last4: account.accountNumberLast4,
-      opening_balance: account.openingBalance
-        ? Number(account.openingBalance)
-        : null,
-      currency_code: account.currencyCode,
-      icon_key: account.iconKey,
-      status: account.status,
-      created_at: account.createdAt,
-      updated_at: account.updatedAt,
-      currency_symbol: account.currency.symbol ? account.currency.symbol : null,
-    }));
+    return {
+      summary: {
+        total_balance: Number(totalBalance.toFixed(2)),
+        currency_code: targetCurrencyCode,
+        currency_symbol: targetCurrencySymbol,
+      },
+      accounts: mappedAccounts,
+    };
   }
 
   async createAccountType(

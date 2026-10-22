@@ -1,6 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 import { CreateUserDto } from './schemas/create-user.schema.js';
+import type { CompleteOnboardingDto } from './schemas/complete-onboarding.schema.js';
 import { hashToken } from '../../common/utils/token.util.js';
 import { PrismaService } from '../../database/prisma/prisma.service.js';
 import { hashPassword } from '../../common/utils/bcrypt.util.js';
@@ -35,6 +40,67 @@ export class UsersService {
     });
 
     return;
+  }
+
+  async findMe(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        preferredCurrencyCode: true,
+        onboardedAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      preferred_currency_code: user.preferredCurrencyCode,
+      is_onboarded: Boolean(user.onboardedAt),
+    };
+  }
+
+  async completeOnboarding(
+    userId: string,
+    completeOnboardingDto: CompleteOnboardingDto,
+  ) {
+    const { name, preferred_currency_code } = completeOnboardingDto;
+
+    const currency = await this.prisma.currency.findFirst({
+      where: {
+        code: preferred_currency_code,
+        isSelectable: true,
+      },
+    });
+
+    if (!currency) {
+      throw new NotFoundException('Selected currency is not available.');
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        name,
+        preferredCurrencyCode: preferred_currency_code,
+        onboardedAt: new Date(),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        preferredCurrencyCode: true,
+        onboardedAt: true,
+      },
+    });
+
+    return updatedUser;
   }
 
   findAll() {
