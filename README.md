@@ -1,12 +1,16 @@
+
 # BeezBudget
 
 BeezBudget is a full-stack personal finance web app in development. The current release work focuses on account access: registration, sign-in, email verification, and password recovery. The product roadmap is to grow it into an accessible budgeting app for tracking spending, planning budgets, and reaching savings goals.
+
+**🎨 [View Figma Design](https://www.figma.com/design/SZ7lu8VkBb3db3TXMzOksz/BeezBudget-Design?node-id=0-1&p=f)**
 
 > **Status:** Work in progress. Transaction management, budgets, accounts, goals, analytics, and offline PWA support are not implemented yet.
 
 ## Contents
 
 - [Features](#features)
+- [Figma Design](#figma-design)
 - [Technology](#technology)
 - [Architecture](#architecture)
 - [Data model](#data-model)
@@ -26,15 +30,21 @@ BeezBudget is a full-stack personal finance web app in development. The current 
 - JWT authentication using an HTTP-only access-token cookie
 - PostgreSQL persistence through Prisma
 
+## Figma Design
+
+Explore the BeezBudget UI/UX design and interface concepts in Figma.
+
+**[View BeezBudget Design on Figma →](https://www.figma.com/design/SZ7lu8VkBb3db3TXMzOksz/BeezBudget-Design?node-id=0-1&p=f)**
+
 ## Technology
 
-| Area      | Tools                                                 |
-| --------- | ----------------------------------------------------- |
-| Web       | Next.js, React, TypeScript, Material UI, Tailwind CSS |
-| API       | NestJS, TypeScript, Passport, JWT, Zod                |
-| Data      | PostgreSQL, Prisma                                    |
-| Email     | Resend                                                |
-| API tests | Vitest                                                |
+| Area | Tools |
+| --- | --- |
+| Web | Next.js, React, TypeScript, Material UI, Tailwind CSS |
+| API | NestJS, TypeScript, Passport, JWT, Zod |
+| Data | PostgreSQL, Prisma |
+| Email | Resend |
+| API tests | Vitest |
 
 ## Architecture
 
@@ -140,20 +150,20 @@ npm run start:dev
 
 ## Environment variables
 
-| Variable             | Used by        | Purpose                                                |
-| -------------------- | -------------- | ------------------------------------------------------ |
-| `POSTGRES_USER`      | Docker Compose | Local PostgreSQL username                              |
-| `POSTGRES_PASSWORD`  | Docker Compose | Local PostgreSQL password                              |
-| `POSTGRES_DB`        | Docker Compose | Local PostgreSQL database name                         |
-| `DATABASE_URL`       | API / Prisma   | PostgreSQL connection string                           |
-| `PORT`               | API            | API listening port; defaults to `3001`                 |
-| `FRONTEND_URL`       | API            | Frontend base URL used in email links                  |
-| `RESEND_API_KEY`     | API            | Resend credential for sending email                    |
-| `PRIVATE_KEY`        | API            | Base64-encoded PEM RSA private key for JWT signing     |
-| `PUBLIC_KEY`         | API            | Base64-encoded PEM RSA public key for JWT verification |
-| `OBSERVE_APP_KEY`    | API            | NestJS Observe application key                         |
-| `OBSERVE_APP_SECRET` | API            | NestJS Observe application secret                      |
-| `BACKEND_URL`        | Web            | API origin used by server-rendered pages               |
+| Variable | Used by | Purpose |
+| --- | --- | --- |
+| `POSTGRES_USER` | Docker Compose | Local PostgreSQL username |
+| `POSTGRES_PASSWORD` | Docker Compose | Local PostgreSQL password |
+| `POSTGRES_DB` | Docker Compose | Local PostgreSQL database name |
+| `DATABASE_URL` | API / Prisma | PostgreSQL connection string |
+| `PORT` | API | API listening port; defaults to `3001` |
+| `FRONTEND_URL` | API | Frontend base URL used in email links |
+| `RESEND_API_KEY` | API | Resend credential for sending email |
+| `PRIVATE_KEY` | API | Base64-encoded PEM RSA private key for JWT signing |
+| `PUBLIC_KEY` | API | Base64-encoded PEM RSA public key for JWT verification |
+| `OBSERVE_APP_KEY` | API | NestJS Observe application key |
+| `OBSERVE_APP_SECRET` | API | NestJS Observe application secret |
+| `BACKEND_URL` | Web | API origin used by server-rendered pages |
 
 ## Scripts
 
@@ -161,23 +171,23 @@ Run commands from the relevant application directory.
 
 ### API (`apps/api`)
 
-| Command             | Description                 |
-| ------------------- | --------------------------- |
+| Command | Description |
+| --- | --- |
 | `npm run start:dev` | Start the API in watch mode |
-| `npm run build`     | Build the API               |
-| `npm run lint`      | Lint API source and tests   |
-| `npm run test`      | Run unit tests              |
-| `npm run test:e2e`  | Run end-to-end tests        |
-| `npm run test:cov`  | Run tests with coverage     |
+| `npm run build` | Build the API |
+| `npm run lint` | Lint API source and tests |
+| `npm run test` | Run unit tests |
+| `npm run test:e2e` | Run end-to-end tests |
+| `npm run test:cov` | Run tests with coverage |
 
 ### Web (`apps/web`)
 
-| Command         | Description                          |
-| --------------- | ------------------------------------ |
-| `npm run dev`   | Start the Next.js development server |
-| `npm run build` | Build the web app                    |
-| `npm run start` | Start the production server          |
-| `npm run lint`  | Run ESLint                           |
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server |
+| `npm run build` | Build the web app |
+| `npm run start` | Start the production server |
+| `npm run lint` | Run ESLint |
 
 ## API documentation
 
